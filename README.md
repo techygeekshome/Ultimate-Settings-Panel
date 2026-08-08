@@ -21,16 +21,22 @@ A modern, ground-up rebuild of the classic TechyGeeksHome **Ultimate Settings Pa
 
 ## 📸 Screenshots
 
-<!--
-  Drop screenshots in here — e.g.
-  <img src="docs/screenshot-main.png" alt="Ultimate Settings Panel main view" width="800">
-  A 2-3 column layout works well for a light/dark or desktop/web comparison:
-  <p float="left">
-    <img src="docs/screenshot-dark.png" width="49%" />
-    <img src="docs/screenshot-light.png" width="49%" />
-  </p>
--->
-*Screenshots coming soon.*
+<p float="left">
+  <img src="Screenshots/usp-screenshot-1.jpg" width="49%" />
+  <img src="Screenshots/usp-screenshot-2.jpg" width="49%" />
+</p>
+<p float="left">
+  <img src="Screenshots/usp-screenshot-3.jpg" width="49%" />
+  <img src="Screenshots/usp-screenshot-4.jpg" width="49%" />
+</p>
+<p float="left">
+  <img src="Screenshots/usp-screenshot-5.jpg" width="49%" />
+  <img src="Screenshots/usp-screenshot-6.jpg" width="49%" />
+</p>
+<p float="left">
+  <img src="Screenshots/usp-screenshot-7.jpg" width="49%" />
+  <img src="Screenshots/usp-screenshot-8.jpg" width="49%" />
+</p>
 
 ## ⬇️ Download & run
 
@@ -87,7 +93,9 @@ Found a bug or have a request? [Open an issue](https://github.com/techygeekshome
 
 ## 📄 License
 
-*(TODO — add your chosen license here, e.g. MIT, before making this repo public. Nothing in this project currently states usage terms.)*
+© 2026 TechyGeeksHome. All rights reserved.
+
+Ultimate Settings Panel is free to download and use. This is proprietary freeware, not open source — see [`LICENSE`](LICENSE) for the full terms.
 
 ---
 
