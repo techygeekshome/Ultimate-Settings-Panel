@@ -1,0 +1,51 @@
+================================================================
+  ULTIMATE SETTINGS PANEL 8.0  -  by TechyGeeksHome
+================================================================
+
+Two files. For most people, just use #1.
+
+
+1) THE PROGRAM  ->  "Ultimate Settings Panel.exe"   (recommended)
+-----------------------------------------------------------------
+   DOUBLE-CLICK it. It opens straight away - nothing to install.
+   Works on Windows 10 and 11.
+
+   - It's a real native app: the panel runs in a Microsoft Edge
+     WebView2 window (already built into Windows).
+   - Every card has a "Run" button that launches the tool, setting
+     or command directly.
+   - Search at the top, click a category, star your favourites,
+     switch light/dark with the button top-right.
+   - Click the (i) button (top-right) for About; the circular-arrow
+     button checks TechyGeeksHome for updates.
+
+   First-time notes:
+   * If you see a blue "Windows protected your PC" box, that's only
+     because the app isn't code-signed yet. Click "More info" ->
+     "Run anyway". (It's your own tool - it's safe.)
+   * A few items (SFC scan, DISM, network resets) need admin rights.
+     For those, right-click the .exe and choose
+     "Run as administrator".
+   * Very rare: if it says the "WebView2 runtime" is missing, click
+     OK to open Microsoft's page and install the free "Evergreen
+     Standalone" download, then run the app again. (Windows 11 and
+     up-to-date Windows 10 already have it.)
+
+
+2) THE WEB EDITION  ->  "Ultimate Settings Panel - Web Edition.url"
+--------------------------------------------------------------------
+   Double-click the shortcut to open the live web edition on
+   techygeekshome.info, in your browser. Works on any device -
+   Windows, Mac, phone, tablet. Nothing to install.
+
+   In a browser, programs can't be launched for safety, so each
+   item has "Copy" and "Get .bat" buttons instead of Run. Great
+   for sharing, or for non-Windows PCs.
+
+   Needs an internet connection (the program in #1 doesn't).
+
+
+Tip: right-click the .exe -> "Send to" -> "Desktop (create
+shortcut)", or pin it to Start, to keep it one click away.
+
+TechyGeeksHome - https://techygeekshome.info
