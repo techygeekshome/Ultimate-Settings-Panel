@@ -11,13 +11,19 @@
 [![Web edition](https://img.shields.io/badge/web%20edition-live-3fca86)](https://techygeekshome.info/ultimate-settings-panel-online/)
 [![Made by TechyGeeksHome](https://img.shields.io/badge/made%20by-TechyGeeksHome-b191f2)](https://techygeekshome.info)
 
-[Download](#-download--run) · [Features](#-what-it-does) · [Screenshots](#-screenshots) · [How it works](#%EF%B8%8F-how-launching-works) · [Build from source](#-build-from-source) · [Changelog](CHANGELOG.md)
+[Download](#-download--run) · [Features](#-what-it-does) · [Video](#-see-it-in-action) · [Screenshots](#-screenshots) · [How it works](#%EF%B8%8F-how-launching-works) · [Build from source](#-build-from-source) · [Changelog](CHANGELOG.md)
 
 </div>
 
 ---
 
 A modern, ground-up rebuild of the classic TechyGeeksHome **Ultimate Settings Panel** — a native Windows app *and* a portable web app, replacing the original C#/WinForms program from 2020. No install, no dependencies, nothing phones home.
+
+## 🎬 See it in action
+
+[![Ultimate Settings Panel walkthrough](https://img.youtube.com/vi/ATa4AXIVzvM/maxresdefault.jpg)](https://www.youtube.com/watch?v=ATa4AXIVzvM)
+
+A full walkthrough of the panel — search, categories, themes and launching settings.
 
 ## 📸 Screenshots
 
