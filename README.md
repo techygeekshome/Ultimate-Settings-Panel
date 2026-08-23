@@ -10,6 +10,7 @@
 [![Platform](https://img.shields.io/badge/platform-Windows%2010%20%7C%2011-0078d4)](#-download--run)
 [![Web edition](https://img.shields.io/badge/web%20edition-live-3fca86)](https://techygeekshome.info/ultimate-settings-panel-online/)
 [![Made by TechyGeeksHome](https://img.shields.io/badge/made%20by-TechyGeeksHome-b191f2)](https://techygeekshome.info)
+[![Support on Ko-fi](https://img.shields.io/badge/support-Ko--fi-ff5e5b)](https://ko-fi.com/techygeekshome)
 
 [Download](#-download--run) · [Features](#-what-it-does) · [Video](#-see-it-in-action) · [Screenshots](#-screenshots) · [How it works](#%EF%B8%8F-how-launching-works) · [Build from source](#-build-from-source) · [Changelog](CHANGELOG.md)
 
