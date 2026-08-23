@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>ultimate-settings-panel</id>
+    <version>8.0.0</version>
+    <title>Ultimate Settings Panel</title>
+    <authors>TechyGeeksHome</authors>
+    <owners>techygeekshome</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <licenseUrl>https://github.com/techygeekshome/Ultimate-Settings-Panel/blob/main/LICENSE</licenseUrl>
+    <projectUrl>https://techygeekshome.info/ultimate-settings-panel-online/</projectUrl>
+    <description>Ultimate Settings Panel puts more than 250 Windows settings, administrative tools, diagnostics
+and commands into a single searchable window, so you stop hunting through Settings, Control
+Panel and half-remembered run commands.
+
+* Search across everything from the top of the window
+* Browse by category, and star the entries you use most
+* Every card has a Run button that launches the tool directly, and a Copy button for the
+  underlying command
+* Light and dark themes
+
+Categories cover Windows 11 settings, Windows tools, Control Panel applets, networking,
+diagnostics, power and session, server administration, terminal and shell, Outlook and Office,
+and browsers.
+
+Portable - a single executable, nothing installed, no administrator rights required. First
+released in 2014 and free ever since, with no tiers, no licence fees and no commercial
+restriction.
+
+Version 8.0.0 is a full rewrite: a native app rendering the panel in a Microsoft Edge WebView2
+window, replacing the older WinForms build.</description>
+    <summary>250+ Windows settings, tools and commands in one searchable panel</summary>
+    <releaseNotes>https://github.com/techygeekshome/Ultimate-Settings-Panel/releases/tag/v8.0.0</releaseNotes>
+    <copyright>Copyright (c) 2026 TechyGeeksHome</copyright>
+    <tags>windows-settings system-tools control-panel sysadmin diagnostics portable admin freeware</tags>
+    <projectSourceUrl>https://github.com/techygeekshome/Ultimate-Settings-Panel</projectSourceUrl>
+    <packageSourceUrl>https://github.com/techygeekshome/Ultimate-Settings-Panel</packageSourceUrl>
+    <docsUrl>https://techygeekshome.info/ultimate-settings-panel-online/</docsUrl>
+    <bugTrackerUrl>https://github.com/techygeekshome/Ultimate-Settings-Panel/issues</bugTrackerUrl>
+  </metadata>
+</package>
