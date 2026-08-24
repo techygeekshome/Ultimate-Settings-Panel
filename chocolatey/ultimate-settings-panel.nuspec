@@ -1,8 +1,8 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>ultimate-settings-panel</id>
-    <version>8.0.0</version>
+    <version>8.0.1</version>
     <title>Ultimate Settings Panel</title>
     <authors>TechyGeeksHome</authors>
     <owners>techygeekshome</owners>
@@ -28,10 +28,11 @@ Portable - a single executable, nothing installed, no administrator rights requi
 released in 2014 and free ever since, with no tiers, no licence fees and no commercial
 restriction.
 
-Version 8.0.0 is a full rewrite: a native app rendering the panel in a Microsoft Edge WebView2
-window, replacing the older WinForms build.</description>
+Version 8.0 was a full rewrite: a native app rendering the panel in a Microsoft Edge WebView2
+window, replacing the older WinForms build. Version 8.0.1 stops the update check running at
+startup - it now asks GitHub for the latest release only when you press the button.</description>
     <summary>250+ Windows settings, tools and commands in one searchable panel</summary>
-    <releaseNotes>https://github.com/techygeekshome/Ultimate-Settings-Panel/releases/tag/v8.0.0</releaseNotes>
+    <releaseNotes>https://github.com/techygeekshome/Ultimate-Settings-Panel/releases/tag/v8.0.1</releaseNotes>
     <copyright>Copyright (c) 2026 TechyGeeksHome</copyright>
     <tags>windows-settings system-tools control-panel sysadmin diagnostics portable admin freeware</tags>
     <projectSourceUrl>https://github.com/techygeekshome/Ultimate-Settings-Panel</projectSourceUrl>
