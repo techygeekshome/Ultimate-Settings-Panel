@@ -29,7 +29,13 @@ jobs:
         with:
           go-version: '1.24'
 
+      # go-webview2 is Windows-only, so on a Linux agent the package compiles to an empty
+      # stub and vet reports every call into it as undefined. Vet for the target we ship.
       - name: Vet
+        env:
+          GOOS: windows
+          GOARCH: amd64
+          CGO_ENABLED: 0
         run: go vet ./...
 
       # Cross-compiled from Linux on purpose: no cgo, so the Windows binary is
