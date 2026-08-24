@@ -6,8 +6,8 @@ $toolsDir = Split-Path -Parent $MyInvocation.MyCommand.Definition
 $packageArgs = @{
   packageName    = 'ultimate-settings-panel'
   unzipLocation  = $toolsDir
-  url            = 'https://github.com/techygeekshome/Ultimate-Settings-Panel/releases/download/v8.0.0/Ultimate-Settings-Panel.zip'
-  checksum       = '470d6caf7c1d7926cfe041f86cd66b255a35b8956084608d8defa89929626e7b'
+  url            = 'https://github.com/techygeekshome/Ultimate-Settings-Panel/releases/download/v8.0.1/Ultimate-Settings-Panel.zip'
+  checksum       = '975d3c213d8094bb5ad332c89c67a3a2fd440ea42aef3ebb1372ad9984ae8e3e'
   checksumType   = 'sha256'
 }
 
