@@ -18,7 +18,7 @@
 
 ---
 
-A modern, ground-up rebuild of the classic TechyGeeksHome **Ultimate Settings Panel** — a native Windows app *and* a portable web app, replacing the original C#/WinForms program from 2020. No install, no dependencies, nothing phones home.
+A modern, ground-up rebuild of the classic TechyGeeksHome **Ultimate Settings Panel** — a native Windows app *and* a portable web app, replacing the original C#/WinForms program from 2020. No install, no dependencies, and no network connection unless you press Check for updates.
 
 ## 🎬 See it in action
 
@@ -86,7 +86,29 @@ GOOS=windows GOARCH=amd64 CGO_ENABLED=0 \
   go build -trimpath -ldflags="-H windowsgui -s -w" -o "Ultimate Settings Panel.exe" .
 ```
 
-The web edition is a single self-contained `index.html` — just open it.
+Two HTML files, and they are not the same file:
+
+| File | What it is |
+|---|---|
+| `panel.html` | The desktop panel. `main.go` embeds it, so this is what ships inside the `.exe`. |
+| `index.html` | The web edition. Open it in a browser, or [run it on the site](https://techygeekshome.info/ultimate-settings-panel-online/). Nothing else needed. |
+
+The desktop build is otherwise the same panel in a WebView2 window. The only thing the Go
+side adds is answering "is there a newer version?", because a page loaded from a `data:`
+URL cannot call GitHub for itself.
+
+### On the one network call
+
+Ultimate Settings Panel makes exactly one network request, and only when you click
+**Check for updates**. It asks GitHub's public releases API whether a newer tag exists.
+The request carries a user agent naming the app, its version and this site, because GitHub
+rejects requests without one — and nothing else. No machine identifier, no record of which
+settings you opened, no usage data. It never downloads or installs anything: if there is a
+newer version it offers a link to the release page, and that is all.
+
+**Nothing is requested when the app starts.** Open it, use it, close it, and it makes no
+network connection at all. Version 8.0.0 did quietly check on every launch; 8.0.1 does not,
+and the build workflow fails if that behaviour ever comes back.
 
 ## 📜 What's new in 8.0
 

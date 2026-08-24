@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Ultimate Settings Panel 8.0 - a modern, searchable web panel of Windows 11 settings, classic tools, network diagnostics and commands. By TechyGeeksHome.">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8E%9B%EF%B8%8F%3C/text%3E%3C/svg%3E">
+<title>Ultimate Settings Panel 8.0</title>
+<style>
+  :root{
+    --ground:#f5f7fa; --surface:#ffffff; --surface-2:#eef1f5;
+    --ink:#0f141b; --muted:#5b6673; --faint:#8a95a3;
+    --border:#e2e7ee; --border-strong:#cdd5df;
+    --accent:#1f6feb; --accent-ink:#ffffff; --accent-soft:#e8f0fe;
+    --launch:#1a7f4b; --launch-soft:#e4f4ea;
+    --cmd:#b25e09; --cmd-soft:#fbeede;
+    --web:#6d3fc4; --web-soft:#efe8fb;
+    --shadow:0 1px 2px rgba(16,22,30,.06),0 8px 24px rgba(16,22,30,.06);
+    --mono:"Cascadia Code","Cascadia Mono",Consolas,"SFMono-Regular",ui-monospace,Menlo,monospace;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --r:12px;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --ground:#0c0f14; --surface:#141a23; --surface-2:#1b222d;
+      --ink:#e7edf5; --muted:#93a0b1; --faint:#68758a;
+      --border:#232c39; --border-strong:#313d4e;
+      --accent:#4c9bff; --accent-ink:#06101f; --accent-soft:#16273f;
+      --launch:#3fca86; --launch-soft:#0f2b1e;
+      --cmd:#f0a44a; --cmd-soft:#2c2113;
+      --web:#b191f2; --web-soft:#211a35;
+      --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px rgba(0,0,0,.35);
+    }
+  }
+  :root[data-theme="light"]{
+    --ground:#f5f7fa; --surface:#ffffff; --surface-2:#eef1f5;
+    --ink:#0f141b; --muted:#5b6673; --faint:#8a95a3;
+    --border:#e2e7ee; --border-strong:#cdd5df;
+    --accent:#1f6feb; --accent-ink:#ffffff; --accent-soft:#e8f0fe;
+    --launch:#1a7f4b; --launch-soft:#e4f4ea;
+    --cmd:#b25e09; --cmd-soft:#fbeede;
+    --web:#6d3fc4; --web-soft:#efe8fb;
+    --shadow:0 1px 2px rgba(16,22,30,.06),0 8px 24px rgba(16,22,30,.06);
+  }
+  :root[data-theme="dark"]{
+    --ground:#0c0f14; --surface:#141a23; --surface-2:#1b222d;
+    --ink:#e7edf5; --muted:#93a0b1; --faint:#68758a;
+    --border:#232c39; --border-strong:#313d4e;
+    --accent:#4c9bff; --accent-ink:#06101f; --accent-soft:#16273f;
+    --launch:#3fca86; --launch-soft:#0f2b1e;
+    --cmd:#f0a44a; --cmd-soft:#2c2113;
+    --web:#b191f2; --web-soft:#211a35;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px rgba(0,0,0,.35);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--sans);
+    font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
+
+  /* ---- top command bar ---- */
+  header.bar{position:sticky;top:0;z-index:40;background:color-mix(in srgb,var(--ground) 86%,transparent);
+    backdrop-filter:saturate(140%) blur(12px);border-bottom:1px solid var(--border)}
+  .bar-inner{max-width:1240px;margin:0 auto;padding:12px 20px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+  .brand{display:flex;align-items:center;gap:11px;flex:0 0 auto}
+  .logo{width:34px;height:34px;border-radius:9px;flex:0 0 auto;display:grid;place-items:center;
+    background:linear-gradient(150deg,var(--accent),color-mix(in srgb,var(--accent) 55%,#7b4cff));
+    box-shadow:0 2px 10px color-mix(in srgb,var(--accent) 45%,transparent)}
+  .logo svg{width:20px;height:20px;display:block}
+  .brand .name{font-family:var(--mono);font-weight:700;font-size:15px;letter-spacing:-.2px;line-height:1.05}
+  .brand .name b{color:var(--accent)}
+  .brand .ver{font-family:var(--mono);font-size:10.5px;color:var(--muted);letter-spacing:.5px;margin-top:1px}
+  .search{position:relative;flex:1 1 320px;min-width:220px}
+  .search svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);width:16px;height:16px;color:var(--faint)}
+  #q{width:100%;padding:11px 40px 11px 36px;border-radius:10px;border:1px solid var(--border-strong);
+    background:var(--surface);color:var(--ink);font-family:var(--sans);font-size:14.5px;outline:none;transition:border-color .15s,box-shadow .15s}
+  #q:focus{border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 22%,transparent)}
+  .kbd{position:absolute;right:9px;top:50%;transform:translateY(-50%);font-family:var(--mono);font-size:11px;
+    color:var(--faint);border:1px solid var(--border-strong);border-radius:5px;padding:1px 6px;background:var(--surface-2)}
+  .tools{display:flex;align-items:center;gap:8px;flex:0 0 auto}
+  .count{font-family:var(--mono);font-size:12px;color:var(--muted);white-space:nowrap;font-variant-numeric:tabular-nums}
+  .count b{color:var(--ink)}
+  .icon-btn{width:38px;height:38px;border-radius:10px;border:1px solid var(--border-strong);background:var(--surface);
+    color:var(--ink);cursor:pointer;display:grid;place-items:center;transition:background .15s,border-color .15s,transform .1s}
+  .icon-btn:hover{background:var(--surface-2);border-color:var(--accent)}
+  .icon-btn:active{transform:translateY(1px)}
+  .icon-btn svg{width:18px;height:18px}
+  .icon-btn .moon{display:none}
+  :root[data-theme="dark"] .icon-btn .sun{display:none}
+  :root[data-theme="dark"] .icon-btn .moon{display:block}
+  @media (prefers-color-scheme:dark){.icon-btn .sun{display:none}.icon-btn .moon{display:block}}
+  :root[data-theme="light"] .icon-btn .sun{display:block}
+  :root[data-theme="light"] .icon-btn .moon{display:none}
+
+  /* ---- layout ---- */
+  .wrap{max-width:1240px;margin:0 auto;padding:22px 20px 60px;display:grid;grid-template-columns:212px 1fr;gap:26px;align-items:start}
+  nav.rail{position:sticky;top:78px;display:flex;flex-direction:column;gap:2px;max-height:calc(100vh - 100px);overflow-y:auto;padding-right:4px}
+  .rail-h{font-family:var(--mono);font-size:10.5px;letter-spacing:1.2px;text-transform:uppercase;color:var(--faint);
+    padding:6px 10px 8px}
+  .cat{display:flex;align-items:center;gap:9px;width:100%;text-align:left;padding:8px 10px;border-radius:9px;border:0;
+    background:transparent;color:var(--muted);cursor:pointer;font-family:var(--sans);font-size:13.5px;transition:background .13s,color .13s}
+  .cat:hover{background:var(--surface-2);color:var(--ink)}
+  .cat.on{background:var(--accent-soft);color:var(--accent);font-weight:600}
+  .cat .dot{width:7px;height:7px;border-radius:50%;background:currentColor;flex:0 0 auto;opacity:.8}
+  .cat .n{flex:1 1 auto;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .cat .c{font-family:var(--mono);font-size:11px;color:var(--faint);font-variant-numeric:tabular-nums}
+  .cat.on .c{color:var(--accent)}
+
+  main{min-width:0}
+  .sec-h{display:flex;align-items:baseline;gap:11px;margin:6px 0 14px;padding-top:4px;scroll-margin-top:78px}
+  .sec-h h2{margin:0;font-family:var(--mono);font-size:16px;font-weight:700;letter-spacing:-.3px;text-wrap:balance}
+  .sec-h .sub{color:var(--muted);font-size:12.5px}
+  .sec-h .rule{flex:1 1 auto;height:1px;background:var(--border)}
+
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(288px,1fr));gap:12px;margin-bottom:30px}
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:14px 14px 12px;
+    display:flex;flex-direction:column;gap:9px;position:relative;transition:border-color .15s,box-shadow .15s,transform .12s}
+  .card:hover{border-color:var(--border-strong);box-shadow:var(--shadow);transform:translateY(-1px)}
+  .card .top{display:flex;align-items:flex-start;gap:8px}
+  .card h3{margin:0;font-size:14.5px;font-weight:600;line-height:1.25;flex:1 1 auto;letter-spacing:-.1px}
+  .pill{font-family:var(--mono);font-size:10px;letter-spacing:.4px;text-transform:uppercase;font-weight:600;
+    padding:3px 7px;border-radius:20px;white-space:nowrap;flex:0 0 auto;margin-top:1px}
+  .pill.launch{color:var(--launch);background:var(--launch-soft)}
+  .pill.cmd{color:var(--cmd);background:var(--cmd-soft)}
+  .pill.web{color:var(--web);background:var(--web-soft)}
+  .card p{margin:0;font-size:12.8px;color:var(--muted);line-height:1.45;flex:1 1 auto}
+  .chip{font-family:var(--mono);font-size:11.5px;color:var(--ink);background:var(--surface-2);border:1px solid var(--border);
+    border-radius:7px;padding:6px 8px;overflow-x:auto;white-space:nowrap;scrollbar-width:thin}
+  .chip::-webkit-scrollbar{height:5px}.chip::-webkit-scrollbar-thumb{background:var(--border-strong);border-radius:3px}
+  .chip .pfx{color:var(--faint);user-select:none}
+  .actions{display:flex;align-items:center;gap:6px;margin-top:1px}
+  .act{font-family:var(--sans);font-size:12.5px;font-weight:500;padding:7px 11px;border-radius:8px;cursor:pointer;
+    border:1px solid var(--border-strong);background:var(--surface);color:var(--ink);display:inline-flex;align-items:center;gap:6px;
+    transition:background .13s,border-color .13s,color .13s;text-decoration:none}
+  .act svg{width:14px;height:14px}
+  .act:hover{background:var(--surface-2);border-color:var(--accent)}
+  .act.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+  .act.primary:hover{filter:brightness(1.06)}
+  .act.launch{background:var(--launch);color:#fff;border-color:var(--launch)}
+  .act.launch:hover{filter:brightness(1.06)}
+  .spacer{flex:1 1 auto}
+  .fav{width:32px;height:32px;padding:0;justify-content:center;border-radius:8px}
+  .fav svg{width:16px;height:16px;color:var(--faint);transition:color .13s,transform .13s}
+  .fav.on svg{color:#f5b301;fill:#f5b301}
+  .fav:hover svg{transform:scale(1.12)}
+
+  .empty{text-align:center;padding:70px 20px;color:var(--muted)}
+  .empty svg{width:44px;height:44px;color:var(--faint);margin-bottom:12px}
+  .empty h3{margin:0 0 6px;font-family:var(--mono);color:var(--ink)}
+  .empty button{margin-top:14px}
+
+  footer{max-width:1240px;margin:0 auto;padding:26px 20px 40px;border-top:1px solid var(--border);
+    display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between;color:var(--muted);font-size:12.5px}
+  footer a{color:var(--accent);text-decoration:none}
+  footer a:hover{text-decoration:underline}
+  .note{max-width:560px;line-height:1.5}
+  .note code{font-family:var(--mono);font-size:11.5px;background:var(--surface-2);padding:1px 5px;border-radius:5px;color:var(--ink)}
+
+  #toast{position:fixed;left:50%;bottom:26px;transform:translate(-50%,20px);opacity:0;pointer-events:none;
+    background:var(--ink);color:var(--ground);font-family:var(--mono);font-size:13px;padding:10px 16px;border-radius:10px;
+    box-shadow:var(--shadow);transition:opacity .2s,transform .2s;z-index:60;display:flex;align-items:center;gap:8px}
+  #toast.show{opacity:1;transform:translate(-50%,0)}
+  #toast svg{width:15px;height:15px;color:var(--launch)}
+
+  a.act:focus-visible,button:focus-visible,#q:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+  /* update badge on the updates button */
+  .icon-btn{position:relative}
+  .badge{position:absolute;top:6px;right:6px;width:9px;height:9px;border-radius:50%;
+    background:var(--cmd);border:2px solid var(--ground)}
+
+  /* modal (About / Updates) */
+  .modal-back{position:fixed;inset:0;z-index:80;display:flex;align-items:center;justify-content:center;
+    background:rgba(6,10,16,.55);backdrop-filter:blur(3px);padding:20px}
+  .modal-back[hidden]{display:none}  /* [hidden] alone loses to display:flex above */
+  .modal{background:var(--surface);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow);
+    width:100%;max-width:400px;padding:26px 26px 22px;position:relative;text-align:center}
+  .modal-x{position:absolute;top:10px;right:10px;width:30px;height:30px;border-radius:8px;border:0;
+    background:transparent;color:var(--muted);font-size:20px;line-height:1;cursor:pointer}
+  .modal-x:hover{background:var(--surface-2);color:var(--ink)}
+  .about-logo{width:84px;height:84px;border-radius:19px;display:block;margin:2px auto 14px;
+    box-shadow:0 6px 18px color-mix(in srgb,var(--accent) 40%,transparent)}
+  .modal h2{margin:0;font-family:var(--mono);font-size:19px;letter-spacing:-.3px}
+  .about-ver{color:var(--muted);font-size:13px;margin-top:3px}
+  .about-tag{margin:14px 0 4px;font-size:13.5px;line-height:1.5}
+  .chip-link{font-family:var(--mono);font-size:13px;color:var(--accent);background:var(--accent-soft);
+    border:1px solid color-mix(in srgb,var(--accent) 30%,transparent);border-radius:8px;padding:7px 14px;
+    margin:10px 0 4px;cursor:pointer}
+  .chip-link:hover{background:color-mix(in srgb,var(--accent) 18%,var(--surface))}
+  .about-copy{color:var(--faint);font-size:11.5px;line-height:1.6;margin:16px 0 0}
+  .upd-msg{font-size:14px;line-height:1.55;margin:6px 0 4px}
+  .upd-sub{color:var(--muted);font-size:12.5px;margin:0 0 4px}
+  .upd-note{font-size:12.5px;color:var(--muted);background:var(--surface-2);border:1px solid var(--border);
+    border-radius:8px;padding:8px 10px;margin:12px 0 0;text-align:left}
+  .modal-actions{display:flex;gap:8px;justify-content:center;margin-top:20px}
+  .modal-actions .act{padding:9px 16px}
+
+  @media (max-width:860px){
+    .wrap{grid-template-columns:1fr;gap:14px}
+    nav.rail{position:static;flex-direction:row;overflow-x:auto;max-height:none;padding-bottom:6px;gap:6px}
+    .rail-h{display:none}
+    .cat{width:auto;flex:0 0 auto;border:1px solid var(--border)}
+    .cat .n{max-width:130px}
+  }
+  @media (max-width:560px){
+    .bar-inner{padding:10px 14px;gap:10px}
+    .brand .ver{display:none}
+    .count{display:none}
+    .wrap{padding:16px 14px 50px}
+  }
+</style>
+</head>
+<body>
+<header class="bar">
+  <div class="bar-inner">
+    <div class="brand">
+      <span class="logo" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round">
+          <line x1="4" y1="6" x2="20" y2="6"/><circle cx="9" cy="6" r="2.4" fill="#fff" stroke="none"/>
+          <line x1="4" y1="12" x2="20" y2="12"/><circle cx="15" cy="12" r="2.4" fill="#fff" stroke="none"/>
+          <line x1="4" y1="18" x2="20" y2="18"/><circle cx="8" cy="18" r="2.4" fill="#fff" stroke="none"/>
+        </svg>
+      </span>
+      <span>
+        <span class="name">Ultimate <b>Settings</b> Panel</span>
+        <span class="ver">v8.0.0 · WINDOWS APP</span>
+      </span>
+    </div>
+    <div class="search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
+      <input id="q" type="text" placeholder="Search 250+ settings, tools & commands…" autocomplete="off" spellcheck="false" aria-label="Search">
+      <span class="kbd">/</span>
+    </div>
+    <div class="tools">
+      <span class="count" id="count"></span>
+      <button class="icon-btn" id="updates" title="Check for updates" aria-label="Check for updates">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 4v4h-4"/></svg>
+        <span class="badge" id="updBadge" hidden></span>
+      </button>
+      <button class="icon-btn" id="about" title="About" aria-label="About Ultimate Settings Panel">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><circle cx="12" cy="7.6" r="0.4" fill="currentColor"/></svg>
+      </button>
+      <button class="icon-btn" id="theme" title="Toggle theme" aria-label="Toggle light/dark theme">
+        <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.5M12 19.5V22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M2 12h2.5M19.5 12H22M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg>
+        <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.8A8.5 8.5 0 1 1 11.2 3a6.6 6.6 0 0 0 9.8 9.8z"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+  <nav class="rail" id="rail" aria-label="Categories"></nav>
+  <main id="main"></main>
+</div>
+
+<footer>
+  <div class="note">
+    <strong style="color:var(--ink)">How launching works.</strong> Click <b>Run</b> to open any item directly.
+    A few items (SFC, DISM, network resets) need administrator rights — right-click
+    <b>Ultimate Settings Panel.exe</b> and choose <b>Run as administrator</b> first. Use <b>Copy</b> to grab any command.
+  </div>
+  <div style="text-align:right">
+    A modern reimagining of the <a href="https://github.com/techygeekshome/Ultimate-Settings-Panel" target="_blank" rel="noopener">Ultimate Settings Panel</a><br>
+    by <a href="https://techygeekshome.info" target="_blank" rel="noopener">TechyGeeksHome</a> · v8.0.0
+  </div>
+</footer>
+
+<div id="modalBack" class="modal-back" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <button class="modal-x" id="modalX" type="button" aria-label="Close">&times;</button>
+    <div id="modalBody"></div>
+  </div>
+</div>
+
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+  "use strict";
+  // kind: "launch" = protocol/app opens on Windows · "web" = website · "cmd" = classic command to copy/run
+  var CATS = [
+    {id:"fav",   name:"Favorites",         short:"Favorites"},
+    {id:"wset",  name:"Windows 11 Settings",short:"Win 11 Settings"},
+    {id:"wtool", name:"Windows Tools",      short:"Windows Tools"},
+    {id:"cpl",   name:"Control Panel",      short:"Control Panel"},
+    {id:"net",   name:"Networking",         short:"Networking"},
+    {id:"diag",  name:"Diagnostics",        short:"Diagnostics"},
+    {id:"power", name:"Power & Session",    short:"Power"},
+    {id:"admin", name:"Server Admin",       short:"Server Admin"},
+    {id:"ps",    name:"Terminal & Shell",   short:"Terminal"},
+    {id:"office",name:"Outlook / Office",   short:"Outlook"},
+    {id:"web",   name:"Browsers",           short:"Browsers"},
+    {id:"fun",   name:"Fun & Extras",       short:"Fun"},
+    {id:"tgh",   name:"TechyGeeksHome",     short:"TechyGeeksHome"}
+  ];
+
+  var D = [];
+  function add(c,n,d,cmd,run,kind){ D.push({c:c,n:n,d:d,cmd:cmd,run:run||null,k:kind}); }
+
+  /* ---------------- Windows 11 Settings (ms-settings:) — launch directly ---------------- */
+  var wset = [
+    ["Settings home","Open the Windows Settings app","ms-settings:"],
+    ["Display","Resolution, scaling, multiple monitors & HDR","ms-settings:display"],
+    ["Night light","Warm-tint scheduling for evening use","ms-settings:nightlight"],
+    ["Sound","Output/input devices, volume & app mixer","ms-settings:sound"],
+    ["Notifications","Per-app alerts, banners & priorities","ms-settings:notifications"],
+    ["Focus / Do not disturb","Silence distractions with a focus session","ms-settings:quiethours"],
+    ["Power & battery","Sleep, screen timeout & power mode","ms-settings:powersleep"],
+    ["Storage","Drive usage, Storage Sense & cleanup","ms-settings:storagesense"],
+    ["Multitasking","Snap layouts, alt-tab & desktops","ms-settings:multitasking"],
+    ["Remote Desktop","Enable and manage RDP to this PC","ms-settings:remotedesktop"],
+    ["Clipboard","Clipboard history & cross-device sync","ms-settings:clipboard"],
+    ["About this PC","Device specs, rename PC & Windows edition","ms-settings:about"],
+    ["Bluetooth & devices","Pair, manage & remove devices","ms-settings:bluetooth"],
+    ["Printers & scanners","Add and manage printers","ms-settings:printers"],
+    ["Mouse","Pointer speed, primary button & scrolling","ms-settings:mousetouchpad"],
+    ["Touchpad","Gestures, taps & sensitivity","ms-settings:devices-touchpad"],
+    ["Pen & Windows Ink","Pen shortcuts & handwriting","ms-settings:pen"],
+    ["AutoPlay","What happens when you insert media","ms-settings:autoplay"],
+    ["USB","USB notifications & battery-saving","ms-settings:usb"],
+    ["Network status","Connection overview & properties","ms-settings:network-status"],
+    ["Wi-Fi","Wireless networks & known connections","ms-settings:network-wifi"],
+    ["Ethernet","Wired connection properties","ms-settings:network-ethernet"],
+    ["VPN","Add and connect to a VPN","ms-settings:network-vpn"],
+    ["Mobile hotspot","Share your connection","ms-settings:network-mobilehotspot"],
+    ["Airplane mode","Toggle all wireless radios","ms-settings:network-airplanemode"],
+    ["Proxy","Manual & automatic proxy setup","ms-settings:network-proxy"],
+    ["Personalization","Themes, colours & backgrounds","ms-settings:personalization"],
+    ["Background","Wallpaper, slideshow & fit","ms-settings:personalization-background"],
+    ["Colors & accent","Light/dark mode and accent colour","ms-settings:colors"],
+    ["Themes","Save and switch full desktop themes","ms-settings:themes"],
+    ["Lock screen","Lock-screen image & status","ms-settings:lockscreen"],
+    ["Start menu","Layout, folders & recommendations","ms-settings:personalization-start"],
+    ["Taskbar","Taskbar items, corner icons & behaviour","ms-settings:taskbar"],
+    ["Fonts","Installed fonts & font settings","ms-settings:fonts"],
+    ["Installed apps","Uninstall, repair & move apps","ms-settings:appsfeatures"],
+    ["Default apps","Set default browser, mail & players","ms-settings:defaultapps"],
+    ["Optional features","Add/remove Windows optional features","ms-settings:optionalfeatures"],
+    ["Startup apps","Control what launches at sign-in","ms-settings:startupapps"],
+    ["Your info","Microsoft account & profile picture","ms-settings:yourinfo"],
+    ["Email & accounts","Accounts used by apps","ms-settings:emailandaccounts"],
+    ["Sign-in options","PIN, Windows Hello & security key","ms-settings:signinoptions"],
+    ["Other users","Add family & other user accounts","ms-settings:otherusers"],
+    ["Windows Backup","Back up folders, apps & settings","ms-settings:backup"],
+    ["Date & time","Time zone, sync & clocks","ms-settings:dateandtime"],
+    ["Language & region","Display language & regional format","ms-settings:regionlanguage"],
+    ["Speech","Speech language & voice","ms-settings:speech"],
+    ["Game Bar","Xbox Game Bar shortcuts","ms-settings:gaming-gamebar"],
+    ["Game Mode","Optimise the PC for gaming","ms-settings:gaming-gamemode"],
+    ["Captures","Game clips & screenshot settings","ms-settings:gaming-gamedvr"],
+    ["Narrator","Screen reader options","ms-settings:easeofaccess-narrator"],
+    ["Magnifier","Screen magnification","ms-settings:easeofaccess-magnifier"],
+    ["Color filters","Colour-blindness filters","ms-settings:easeofaccess-colorfilter"],
+    ["Contrast themes","High-contrast display themes","ms-settings:easeofaccess-highcontrast"],
+    ["Mouse pointer & touch","Pointer size, colour & indicators","ms-settings:easeofaccess-mousepointer"],
+    ["Privacy & security","Central privacy dashboard","ms-settings:privacy"],
+    ["Windows Security","Open Windows Security / Defender","ms-settings:windowsdefender"],
+    ["Find my device","Locate this device if lost","ms-settings:findmydevice"],
+    ["For developers","Developer Mode & sideloading","ms-settings:developers"],
+    ["Camera privacy","Which apps can use the camera","ms-settings:privacy-webcam"],
+    ["Microphone privacy","Which apps can use the mic","ms-settings:privacy-microphone"],
+    ["Location privacy","App & system location access","ms-settings:privacy-location"],
+    ["Windows Update","Check for and install updates","ms-settings:windowsupdate"],
+    ["Update history","Review installed updates","ms-settings:windowsupdate-history"],
+    ["Advanced update options","Active hours & optional updates","ms-settings:windowsupdate-options"],
+    ["Windows Insider","Join the Insider Program","ms-settings:windowsinsider"],
+    ["Delivery Optimization","Update bandwidth & peer sharing","ms-settings:delivery-optimization"],
+    ["Troubleshoot","Run built-in troubleshooters","ms-settings:troubleshoot"],
+    ["Recovery","Reset this PC & advanced startup","ms-settings:recovery"],
+    ["Activation","Windows licence & activation state","ms-settings:activation"]
+  ];
+  wset.forEach(function(x){ add("wset",x[0],x[1],x[2],x[2],"launch"); });
+
+  /* ---------------- Windows Tools (classic) ---------------- */
+  var wtool = [
+    ["About Windows","Windows version & build (winver)","winver"],
+    ["System Configuration","Boot, services & startup (msconfig)","msconfig"],
+    ["Task Manager","Processes, performance & startup","taskmgr"],
+    ["Resource Monitor","Live CPU, disk, network & memory","resmon"],
+    ["Performance Monitor","Data collectors & counters","perfmon"],
+    ["Reliability Monitor","System stability history","perfmon /rel"],
+    ["DirectX Diagnostics","Graphics, sound & input info","dxdiag"],
+    ["System Information","Full hardware & software report","msinfo32"],
+    ["Registry Editor","Edit the Windows registry","regedit"],
+    ["Local Group Policy","Policy editor (Pro/Enterprise)","gpedit.msc"],
+    ["Services","Start, stop & configure services","services.msc"],
+    ["Device Manager","Hardware devices & drivers","devmgmt.msc"],
+    ["Disk Management","Partitions, volumes & drives","diskmgmt.msc"],
+    ["Event Viewer","System, security & app logs","eventvwr.msc"],
+    ["Computer Management","All-in-one management console","compmgmt.msc"],
+    ["Disk Cleanup","Free up disk space","cleanmgr"],
+    ["Defragment & Optimize","Optimise drives (dfrgui)","dfrgui"],
+    ["User Accounts (advanced)","netplwiz — auto-logon & users","netplwiz"],
+    ["Credential Manager","Saved Windows & web credentials","rundll32 keymgr.dll,KRShowKeyMgr"],
+    ["Management Console","Empty MMC to add snap-ins","mmc"],
+    ["Component Services","DCOM & COM+ configuration","dcomcnfg"],
+    ["Character Map","Insert special characters","charmap"],
+    ["ClearType Tuner","Tune on-screen text","cttune"],
+    ["Color Management","ICC profiles & calibration","colorcpl"],
+    ["Driver Verifier","Stress-test drivers (advanced)","verifier"],
+    ["Magnifier","Screen magnifier","magnify"],
+    ["On-Screen Keyboard","Virtual keyboard","osk"],
+    ["Steps Recorder","Record steps to reproduce a problem","psr"],
+    ["Snipping Tool","Capture a screenshot","snippingtool"],
+    ["Volume Mixer","Per-app volume","sndvol"],
+    ["Malicious Software Removal","Microsoft MSRT scan","mrt"],
+    ["System Restore","Restore to an earlier point","rstrui"],
+    ["Display DPI scaling","Legacy scaling dialog","dpiscaling"],
+    ["Default Programs","Set program defaults","computerdefaults"],
+    ["Sync Center","Offline files sync","mobsync"],
+    ["Ease of Access Center","Accessibility hub","utilman"],
+    ["Windows Remote Assistance","Get or give remote help","msra"],
+    ["WordPad","Rich-text editor","write"],
+    ["File Explorer","Open a File Explorer window","explorer"],
+    ["System Properties","Advanced system properties","sysdm.cpl"],
+    ["Data Execution Prevention","DEP configuration","systempropertiesdataexecutionprevention"],
+    ["Performance Options","Visual effects & virtual memory","systempropertiesperformance"],
+    ["Advanced Startup","Reboot to recovery menu","shutdown /r /o /t 0"]
+  ];
+  wtool.forEach(function(x){ add("wtool",x[0],x[1],x[2],null,"cmd"); });
+
+  /* ---------------- Control Panel applets ---------------- */
+  var cpl = [
+    ["Control Panel (home)","Open the classic Control Panel","control"],
+    ["All Control Panel items","God-Mode style full list","control /name Microsoft.DefaultLocation"],
+    ["Programs & Features","Uninstall or change programs","appwiz.cpl"],
+    ["Windows Features","Turn Windows features on/off","optionalfeatures"],
+    ["Administrative Tools","Windows admin tool folder","control admintools"],
+    ["Date and Time","Clock & time-zone settings","timedate.cpl"],
+    ["Region","Formats & locale","intl.cpl"],
+    ["Power Options","Power plans","powercfg.cpl"],
+    ["Sound","Playback & recording devices","mmsys.cpl"],
+    ["Mouse Properties","Buttons, pointers & wheel","main.cpl"],
+    ["Network Connections","Adapter list (ncpa.cpl)","ncpa.cpl"],
+    ["Network & Sharing Center","Networks & sharing","control /name Microsoft.NetworkAndSharingCenter"],
+    ["Internet Options","Legacy internet/proxy settings","inetcpl.cpl"],
+    ["Windows Firewall","Defender Firewall","firewall.cpl"],
+    ["System","System overview","control /name Microsoft.System"],
+    ["Device Manager (CPL)","Devices & drivers","control /name Microsoft.DeviceManager"],
+    ["Devices and Printers","Printers & connected devices","control printers"],
+    ["Fonts","Installed fonts folder","control fonts"],
+    ["User Accounts","Manage local accounts","control userpasswords"],
+    ["Credential Manager","Web & Windows credentials","control /name Microsoft.CredentialManager"],
+    ["Programs Defaults","Default apps (classic)","control /name Microsoft.DefaultPrograms"],
+    ["AutoPlay","AutoPlay defaults","control /name Microsoft.AutoPlay"],
+    ["BitLocker","Drive encryption","control /name Microsoft.BitLockerDriveEncryption"],
+    ["Color Management","Colour profiles","control /name Microsoft.ColorManagement"],
+    ["Ease of Access Center","Accessibility","control /name Microsoft.EaseOfAccessCenter"],
+    ["File Explorer Options","Folder & search options","control folders"],
+    ["Indexing Options","Search index","control /name Microsoft.IndexingOptions"],
+    ["Keyboard","Keyboard properties","control keyboard"],
+    ["Mouse (CPL)","Mouse properties","control mouse"],
+    ["Phone and Modem","Dialing rules","telephon.cpl"],
+    ["Recovery","Recovery options","control /name Microsoft.Recovery"],
+    ["RemoteApp Connections","Work resources","control /name Microsoft.RemoteAppAndDesktopConnections"],
+    ["Security and Maintenance","Action Center (classic)","wscui.cpl"],
+    ["Speech Recognition","Speech options","control /name Microsoft.SpeechRecognition"],
+    ["Storage Spaces","Pooled drives & resiliency","control /name Microsoft.StorageSpaces"],
+    ["Sync Center","Offline files","control /name Microsoft.SyncCenter"],
+    ["Tablet PC Settings","Pen & touch calibration","control /name Microsoft.TabletPCSettings"],
+    ["Taskbar & Navigation","Taskbar (classic)","control /name Microsoft.Taskbar"],
+    ["Troubleshooting","Classic troubleshooters","control /name Microsoft.Troubleshooting"],
+    ["Windows Mobility Center","Laptop quick settings","mblctr"],
+    ["Work Folders","Sync work files","control /name Microsoft.WorkFolders"]
+  ];
+  cpl.forEach(function(x){ add("cpl",x[0],x[1],x[2],null,"cmd"); });
+
+  /* ---------------- Networking ---------------- */
+  var net = [
+    ["IP configuration","Basic adapter addresses","ipconfig"],
+    ["IP configuration (all)","Full adapter detail incl. DNS/MAC","ipconfig /all"],
+    ["Flush DNS cache","Clear resolver cache","ipconfig /flushdns"],
+    ["Display DNS cache","Show cached DNS records","ipconfig /displaydns"],
+    ["Renew DHCP lease","Request new IP addresses","ipconfig /renew"],
+    ["Release DHCP lease","Drop current IP addresses","ipconfig /release"],
+    ["Ping (example)","Test reachability & latency","ping 1.1.1.1"],
+    ["Trace route","Show the path to a host","tracert techygeekshome.info"],
+    ["DNS lookup","Query DNS for a host","nslookup techygeekshome.info"],
+    ["Active connections","Open ports & connections","netstat -ano"],
+    ["Routing table","IPv4/IPv6 routes","route print"],
+    ["ARP cache","IP-to-MAC mappings","arp -a"],
+    ["MAC addresses","Physical adapter addresses","getmac /v"],
+    ["Network shares","Shared folders on this PC","net share"],
+    ["Wi-Fi profiles","List saved wireless profiles","netsh wlan show profiles"],
+    ["Wi-Fi report","Generate a wireless health report","netsh wlan show wlanreport"],
+    ["Reset Winsock","Repair the network stack","netsh winsock reset"],
+    ["Reset TCP/IP","Reset the IP stack","netsh int ip reset"],
+    ["Firewall status","Show Defender Firewall state","netsh advfirewall show allprofiles"]
+  ];
+  net.forEach(function(x){ add("net",x[0],x[1],x[2],null,"cmd"); });
+
+  /* ---------------- Diagnostics ---------------- */
+  var diag = [
+    ["System information","Full systeminfo report","systeminfo"],
+    ["Driver query","Installed device drivers","driverquery /v"],
+    ["Running tasks","Process list (tasklist)","tasklist"],
+    ["Group Policy result","Applied policies (RSoP)","gpresult /r"],
+    ["Environment variables","All current variables","set"],
+    ["File associations","Extension → type map","assoc"],
+    ["Windows version","Kernel/build string","ver"],
+    ["Installed programs","List installed software","winget list"],
+    ["BitLocker status","Encryption state of drives","manage-bde -status"],
+    ["Battery report","Detailed battery health HTML","powercfg /batteryreport"],
+    ["Energy report","Power-efficiency diagnostics","powercfg /energy"],
+    ["SFC scan","Repair protected system files","sfc /scannow"],
+    ["DISM restore health","Repair the component store","DISM /Online /Cleanup-Image /RestoreHealth"],
+    ["Check disk","Scan a volume for errors","chkdsk C:"],
+    ["Reset WMI repository","Rebuild the WMI store","winmgmt /resetrepository"],
+    ["Disable SMBv1","Remove the legacy SMB1 protocol","DISM /online /disable-feature /featurename:SMB1Protocol /norestart"],
+    ["Open files","Files opened by remote users","openfiles /query"],
+    ["Uptime / boot time","When Windows last started","net statistics workstation"]
+  ];
+  diag.forEach(function(x){ add("diag",x[0],x[1],x[2],null,"cmd"); });
+
+  /* ---------------- Power & Session ---------------- */
+  var power = [
+    ["Shut down","Turn the PC off now","shutdown /s /t 0"],
+    ["Restart","Reboot the PC now","shutdown /r /t 0"],
+    ["Restart to firmware (UEFI)","Reboot into BIOS/UEFI","shutdown /r /fw /t 0"],
+    ["Sign out","Log off the current user","shutdown /l"],
+    ["Hibernate","Save session to disk & power off","shutdown /h"],
+    ["Sleep","Put the PC to sleep","rundll32 powrprof.dll,SetSuspendState 0,1,0"],
+    ["Lock workstation","Lock the screen","rundll32 user32.dll,LockWorkStation"],
+    ["Abort shutdown","Cancel a pending shutdown","shutdown /a"],
+    ["Shutdown dialog","Classic remote-shutdown UI","shutdown /i"],
+    ["Enable hibernation","Turn hibernate on","powercfg -h on"],
+    ["Disable hibernation","Turn hibernate off (frees disk)","powercfg -h off"],
+    ["High-performance plan","Switch to high performance","powercfg /setactive SCHEME_MIN"],
+    ["Balanced plan","Switch to balanced power","powercfg /setactive SCHEME_BALANCED"]
+  ];
+  power.forEach(function(x){ add("power",x[0],x[1],x[2],null,"cmd"); });
+
+  /* ---------------- Server Admin (MMC snap-ins) ---------------- */
+  var admin = [
+    ["AD Users and Computers","Manage users, groups & OUs","dsa.msc"],
+    ["AD Sites and Services","Replication topology","dssite.msc"],
+    ["AD Domains and Trusts","Domain & trust relationships","domain.msc"],
+    ["ADSI Edit","Low-level directory editing","adsiedit.msc"],
+    ["Group Policy Management","GPMC (RSAT)","gpmc.msc"],
+    ["DNS Manager","DNS server zones & records","dnsmgmt.msc"],
+    ["DHCP","DHCP scopes & leases","dhcpmgmt.msc"],
+    ["Certification Authority","Manage the CA","certsrv.msc"],
+    ["Certificate Templates","CA templates","certtmpl.msc"],
+    ["Certificates (Local)","Local machine certificates","certlm.msc"],
+    ["Failover Cluster Manager","Manage clusters","cluadmin.msc"],
+    ["Hyper-V Manager","Virtual machines & hosts","virtmgmt.msc"],
+    ["Server Manager","Roles & features dashboard","servermanager"],
+    ["Shared Folders","Shares, sessions & open files","fsmgmt.msc"],
+    ["Local Users and Groups","Local accounts & groups","lusrmgr.msc"],
+    ["Task Scheduler","Scheduled tasks","taskschd.msc"],
+    ["Print Management","Printers & print servers","printmanagement.msc"],
+    ["Windows Firewall (advanced)","Inbound/outbound rules","wf.msc"],
+    ["Authorization Manager","Role-based authorization","azman.msc"],
+    ["iSCSI Initiator","Connect iSCSI targets","iscsicpl"]
+  ];
+  admin.forEach(function(x){ add("admin",x[0],x[1],x[2],null,"cmd"); });
+
+  /* ---------------- Terminal & Shell ---------------- */
+  var ps = [
+    ["Windows Terminal","Modern tabbed terminal","wt"],
+    ["Windows Terminal (admin)","Elevated terminal (prompts for UAC)","powershell -NoProfile -Command \"Start-Process wt -Verb RunAs\""],
+    ["PowerShell 7 (pwsh)","Cross-platform PowerShell","pwsh"],
+    ["Windows PowerShell","Built-in PowerShell 5.1","powershell"],
+    ["PowerShell ISE","Scripting environment","powershell_ise"],
+    ["Command Prompt","Classic cmd.exe","cmd"],
+    ["Update all apps (winget)","Upgrade installed software","winget upgrade --all"],
+    ["List installed (winget)","Everything winget can see","winget list"],
+    ["Install App Installer","Get winget if missing","ms-windows-store://pdp/?productid=9NBLGGH4NNS1","launch"],
+    ["Clear all temp files","Delete %temp% contents","del /q /f /s %temp%\\*"]
+  ];
+  ps.forEach(function(x){ add("ps",x[0],x[1],x[2],x[3]||null,x[4]||"cmd"); });
+
+  /* ---------------- Outlook / Office ---------------- */
+  var office = [
+    ["Outlook (normal)","Start Outlook","outlook"],
+    ["Outlook Safe Mode","Start without add-ins","outlook /safe"],
+    ["Reset navigation pane","Fix a broken folder pane","outlook /resetnavpane"],
+    ["Reset folder names","Restore default folder names","outlook /resetfoldernames"],
+    ["Reset folders","Restore default folders","outlook /resetfolders"],
+    ["Clean views","Reset all custom views","outlook /cleanviews"],
+    ["Clean reminders","Rebuild reminders","outlook /cleanreminders"],
+    ["Clean rules","Delete client & server rules","outlook /cleanrules"],
+    ["Clean free/busy","Rebuild free/busy data","outlook /cleanfreebusy"],
+    ["Clean auto-complete","Clear the nickname cache","outlook /cleanautocompletecache"],
+    ["Reset To-Do Bar","Restore the To-Do Bar","outlook /resettodobar"],
+    ["Reset Quick Steps","Restore default Quick Steps","outlook /resetquicksteps"],
+    ["Choose profile","Prompt for a mail profile","outlook /profiles"],
+    ["No preview","Start with preview off","outlook /nopreview"],
+    ["Inbox Repair Tool","Repair a PST (ScanPST)","%ProgramFiles%\\Microsoft Office\\root\\Office16\\SCANPST.EXE"],
+    ["Mail control panel","Mail profiles applet","control mlcfg32.cpl"],
+    ["Word","Start Microsoft Word","winword"],
+    ["Excel","Start Microsoft Excel","excel"],
+    ["Word Safe Mode","Start Word without add-ins","winword /safe"],
+    ["Excel Safe Mode","Start Excel without add-ins","excel /safe"]
+  ];
+  office.forEach(function(x){ add("office",x[0],x[1],x[2],null,"cmd"); });
+
+  /* ---------------- Browsers ---------------- */
+  add("web","Edge — TechyGeeksHome","Open the TGH blog in Microsoft Edge","microsoft-edge:https://techygeekshome.info","microsoft-edge:https://techygeekshome.info","launch");
+  add("web","Edge — InPrivate","Launch Edge in an InPrivate window","msedge --inprivate",null,"cmd");
+  add("web","Edge — IE Mode","Reload a site in Internet Explorer mode","msedge --ie-mode-force",null,"cmd");
+  add("web","Chrome — TechyGeeksHome","Open the TGH blog in Chrome","chrome https://techygeekshome.info",null,"cmd");
+  add("web","Chrome — Incognito","Launch Chrome in incognito","chrome --incognito",null,"cmd");
+  add("web","Chrome — Kiosk mode","Full-screen kiosk browser","chrome --kiosk https://techygeekshome.info",null,"cmd");
+  add("web","Chrome — Restore session","Reopen the last session","chrome --restore-last-session",null,"cmd");
+  add("web","Firefox — TechyGeeksHome","Open the TGH blog in Firefox","firefox https://techygeekshome.info",null,"cmd");
+  add("web","Firefox — Private window","Launch a private Firefox window","firefox -private-window",null,"cmd");
+  add("web","Firefox — Safe Mode","Start Firefox with add-ons disabled","firefox -safe-mode",null,"cmd");
+  add("web","Firefox — Preferences","Jump straight to preferences","firefox -preferences",null,"cmd");
+
+  /* ---------------- Fun & Extras (dead telnet tricks, modernised to the web) ---------------- */
+  add("fun","Star Wars (ASCIImation)","The classic ASCII Star Wars — the telnet original lives on as a website","https://www.asciimation.co.nz/","https://www.asciimation.co.nz/","web");
+  add("fun","Telehack","Retro simulated 1980s shell & net — still online","https://telehack.com/","https://telehack.com/","web");
+  add("fun","Weather in your terminal","wttr.in — a full forecast rendered as text","https://wttr.in/","https://wttr.in/","web");
+  add("fun","Hacker Typer","Look busy — fake 'hacking' on screen","https://hackertyper.net/","https://hackertyper.net/","web");
+  add("fun","Windows 93","A surreal parody OS in your browser","https://www.windows93.net/","https://www.windows93.net/","web");
+  add("fun","Internet Explorer (retired)","IE was retired by Microsoft in 2022 — this opens Microsoft's official notice","https://www.microsoft.com/en-us/download/internet-explorer","https://www.microsoft.com/en-us/download/internet-explorer","web");
+
+  /* ---------------- TechyGeeksHome links ---------------- */
+  add("tgh","USP Homepage","The Ultimate Settings Panel home page","https://techygeekshome.info/ultimate-settings-panel-homepage/","https://techygeekshome.info/ultimate-settings-panel-homepage/","web");
+  add("tgh","Instructions","How to use the panel","https://techygeekshome.info/ultimate-settings-panel-homepage/ultimate-settings-panel-instructions/","https://techygeekshome.info/ultimate-settings-panel-homepage/ultimate-settings-panel-instructions/","web");
+  add("tgh","TechyGeeksHome Blog","Guides, tips & downloads","https://techygeekshome.info","https://techygeekshome.info","web");
+  add("tgh","GitHub repository","Source code & releases","https://github.com/techygeekshome/Ultimate-Settings-Panel","https://github.com/techygeekshome/Ultimate-Settings-Panel","web");
+  add("tgh","Report a bug / Contact","Get in touch with support","https://techygeekshome.info/contact/","https://techygeekshome.info/contact/","web");
+  add("tgh","YouTube","Video guides & demos","https://www.youtube.com/channel/UCtEuFj1SMLiuRoucD1hv8dA","https://www.youtube.com/channel/UCtEuFj1SMLiuRoucD1hv8dA","web");
+  add("tgh","Facebook","Follow on Facebook","https://www.facebook.com/techygeeks.home","https://www.facebook.com/techygeeks.home","web");
+  add("tgh","X (Twitter)","Follow @TechyGeeks1 on X","https://x.com/TechyGeeks1","https://x.com/TechyGeeks1","web");
+  add("tgh","Instagram","Follow on Instagram","https://www.instagram.com/techygeekshome/","https://www.instagram.com/techygeekshome/","web");
+  add("tgh","Pinterest","TechyGeeksHome on Pinterest","https://www.pinterest.co.uk/techygeekshome/","https://www.pinterest.co.uk/techygeekshome/","web");
+
+  /* ==================== app logic ==================== */
+  var $=function(s,el){return (el||document).querySelector(s);};
+  var main=$("#main"), rail=$("#rail"), q=$("#q"), countEl=$("#count"), toast=$("#toast");
+  var FAVKEY="usp8_favs", THEMEKEY="usp8_theme";
+  // localStorage can throw on the app's opaque origin — keep persistence best-effort.
+  function lsGet(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }
+  function lsSet(k,v){ try{ localStorage.setItem(k,v); }catch(e){} }
+  var favs = []; try{ favs = JSON.parse(lsGet(FAVKEY)||"[]"); }catch(e){ favs=[]; }
+  var active="all", query="";
+
+  // theme
+  function applyTheme(t){ document.documentElement.setAttribute("data-theme",t); }
+  var savedTheme=lsGet(THEMEKEY);
+  if(savedTheme) applyTheme(savedTheme);
+  $("#theme").addEventListener("click",function(){
+    var cur=document.documentElement.getAttribute("data-theme");
+    if(!cur){ cur = matchMedia("(prefers-color-scheme: dark)").matches ? "dark":"light"; }
+    var next = cur==="dark" ? "light":"dark";
+    applyTheme(next); lsSet(THEMEKEY,next);
+  });
+
+  // Native launch bridge — window.uspRun is provided by the Go host.
+  function runNative(it){
+    if(!(window.uspRun)){ showToast("Run bridge unavailable"); return; }
+    try{
+      window.uspRun(it.cmd).then(function(){ showToast("Launched: "+it.n); },
+        function(e){ showToast("Couldn't launch: "+(e&&e.message?e.message:it.n)); });
+    }catch(e){ showToast("Couldn't launch: "+it.n); }
+  }
+
+  function idOf(it){ return it.c+"|"+it.n; }
+  function isFav(it){ return favs.indexOf(idOf(it))>-1; }
+  function pillClass(k){ return k==="launch"?"launch":(k==="web"?"web":"cmd"); }
+  function pillText(k){ return k==="launch"?"Opens":(k==="web"?"Web":"Command"); }
+
+  function svg(name){
+    var m={
+      copy:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>',
+      launch:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg>',
+      down:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 11 5 4 5-4"/><path d="M5 21h14"/></svg>',
+      star:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="m12 3 2.6 5.6 6 .7-4.4 4.1 1.2 5.9L12 17l-5.4 3.3 1.2-5.9L3.4 9.3l6-.7z"/></svg>',
+      search:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>',
+      ok:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4L19 7"/></svg>'
+    };
+    return m[name]||"";
+  }
+
+  function showToast(msg){
+    toast.innerHTML = svg("ok")+"<span>"+msg+"</span>";
+    toast.classList.add("show");
+    clearTimeout(showToast._t);
+    showToast._t=setTimeout(function(){toast.classList.remove("show");},1900);
+  }
+
+  function copyText(t){
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(t).then(function(){showToast("Copied: "+t.slice(0,42));},fallback);
+    } else fallback();
+    function fallback(){
+      var ta=document.createElement("textarea"); ta.value=t;
+      ta.style.position="fixed"; ta.style.opacity="0"; document.body.appendChild(ta);
+      ta.focus(); ta.select();
+      try{ document.execCommand("copy"); showToast("Copied: "+t.slice(0,42)); }catch(e){ showToast("Copy failed — select manually"); }
+      document.body.removeChild(ta);
+    }
+  }
+
+  function downloadBat(it){
+    var safe=it.n.replace(/[^a-z0-9]+/gi,"-").replace(/^-|-$/g,"").toLowerCase();
+    var body="@echo off\r\nrem Ultimate Settings Panel 8.0 - "+it.n+"\r\nrem "+it.d+"\r\ntitle "+it.n+"\r\n"+it.cmd+"\r\n";
+    var blob=new Blob([body],{type:"application/bat"});
+    var url=URL.createObjectURL(blob);
+    var a=document.createElement("a"); a.href=url; a.download="usp-"+safe+".bat";
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(function(){URL.revokeObjectURL(url);},1500);
+    showToast("Saved usp-"+safe+".bat");
+  }
+
+  function cardEl(it){
+    var card=document.createElement("div"); card.className="card";
+    var k=it.k;
+    var top=document.createElement("div"); top.className="top";
+    top.innerHTML='<h3>'+esc(it.n)+'</h3><span class="pill '+pillClass(k)+'">'+pillText(k)+'</span>';
+    card.appendChild(top);
+    var p=document.createElement("p"); p.textContent=it.d; card.appendChild(p);
+    var chip=document.createElement("div"); chip.className="chip";
+    chip.innerHTML='<span class="pfx">&gt; </span>'+esc(it.cmd); card.appendChild(chip);
+
+    var act=document.createElement("div"); act.className="actions";
+    var run=document.createElement("button"); run.className="act launch"; run.type="button";
+    run.innerHTML=svg("launch")+(k==="web"?"Open":"Run");
+    run.addEventListener("click",function(){ runNative(it); });
+    act.appendChild(run);
+
+    var cp=document.createElement("button"); cp.className="act"; cp.type="button";
+    cp.innerHTML=svg("copy")+"Copy";
+    cp.addEventListener("click",function(){copyText(it.cmd);});
+    act.appendChild(cp);
+
+    var sp=document.createElement("span"); sp.className="spacer"; act.appendChild(sp);
+    var fav=document.createElement("button"); fav.className="act fav"+(isFav(it)?" on":""); fav.type="button";
+    fav.title="Add to favourites"; fav.setAttribute("aria-pressed",isFav(it)?"true":"false");
+    fav.innerHTML=svg("star");
+    fav.addEventListener("click",function(){
+      var id=idOf(it), i=favs.indexOf(id);
+      if(i>-1) favs.splice(i,1); else favs.push(id);
+      lsSet(FAVKEY,JSON.stringify(favs));
+      render();
+    });
+    act.appendChild(fav);
+    card.appendChild(act);
+    return card;
+  }
+
+  function esc(s){ return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];}); }
+
+  function matches(it){
+    if(!query) return true;
+    var h=(it.n+" "+it.d+" "+it.cmd).toLowerCase();
+    return query.split(/\s+/).every(function(t){return h.indexOf(t)>-1;});
+  }
+  function inCat(it){
+    if(active==="all") return true;
+    if(active==="fav") return isFav(it);
+    return it.c===active;
+  }
+
+  function counts(){
+    var m={all:0,fav:0};
+    CATS.forEach(function(c){m[c.id]=0;});
+    D.forEach(function(it){
+      if(!matches(it)) return;
+      m.all++; if(isFav(it)) m.fav++;
+      if(m[it.c]!==undefined) m[it.c]++;
+    });
+    return m;
+  }
+
+  function renderRail(){
+    var m=counts();
+    var html='<div class="rail-h">Categories</div>';
+    html+=catBtn("all","All settings",m.all);
+    CATS.forEach(function(c){
+      if(c.id==="fav"){ html+=catBtn("fav",c.name,m.fav); }
+      else html+=catBtn(c.id,c.name,m[c.id]);
+    });
+    rail.innerHTML=html;
+    Array.prototype.forEach.call(rail.querySelectorAll(".cat"),function(b){
+      b.addEventListener("click",function(){ active=b.dataset.id; render(); main.scrollIntoView({block:"start"}); });
+    });
+  }
+  function catBtn(id,label,n){
+    return '<button class="cat'+(active===id?" on":"")+'" data-id="'+id+'">'
+      +'<span class="dot"></span><span class="n">'+esc(label)+'</span><span class="c">'+n+'</span></button>';
+  }
+
+  function render(){
+    renderRail();
+    var m=counts();
+    countEl.innerHTML='<b>'+m.all+'</b> matches';
+    main.innerHTML="";
+    var shown=0;
+    var order;
+    if(active==="fav") order=["fav"];
+    else if(active==="all") order=CATS.map(function(c){return c.id;}).filter(function(x){return x!=="fav";});
+    else order=[active];
+    order.forEach(function(cid){
+      var list=D.filter(function(it){
+        if(cid==="fav") return isFav(it)&&matches(it);
+        return it.c===cid && matches(it);
+      });
+      if(!list.length) return;
+      var cat=CATS.filter(function(c){return c.id===cid;})[0]||{name:"Favorites"};
+      var h=document.createElement("div"); h.className="sec-h";
+      h.innerHTML='<h2>'+esc(cat.name)+'</h2><span class="sub">'+list.length+'</span><span class="rule"></span>';
+      main.appendChild(h);
+      var g=document.createElement("div"); g.className="grid";
+      list.forEach(function(it){ g.appendChild(cardEl(it)); shown++; });
+      main.appendChild(g);
+    });
+    if(!shown){
+      var e=document.createElement("div"); e.className="empty";
+      e.innerHTML=svg("search")+'<h3>Nothing found</h3><div>No settings match “'+esc(query)+'”'+(active!=="all"?" in this category":"")+'.</div><button class="act" type="button" id="clr">Clear filters</button>';
+      main.appendChild(e);
+      $("#clr").addEventListener("click",function(){ q.value=""; query=""; active="all"; render(); q.focus(); });
+    }
+  }
+
+  q.addEventListener("input",function(){ query=q.value.trim().toLowerCase(); render(); });
+  document.addEventListener("keydown",function(e){
+    if(e.key==="/" && document.activeElement!==q){ e.preventDefault(); q.focus(); q.select(); }
+    else if(e.key==="Escape" && document.activeElement===q){ q.value=""; query=""; render(); q.blur(); }
+  });
+
+  /* ---- About + Check for updates ---- */
+  var ABOUT_LOGO = "data:image/png;base64,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";
+  var modalBack=$("#modalBack"), modalBody=$("#modalBody");
+
+  function openExternal(url){
+    if(window.uspRun){ window.uspRun(url); }
+    else { try{ window.open(url,"_blank"); }catch(e){} }
+  }
+  function closeModal(){ modalBack.setAttribute("hidden",""); }
+  function openModal(html){
+    modalBody.innerHTML=html;
+    modalBack.removeAttribute("hidden");
+    Array.prototype.forEach.call(modalBody.querySelectorAll("[data-open]"),function(b){
+      b.addEventListener("click",function(){ openExternal(b.getAttribute("data-open")); });
+    });
+    Array.prototype.forEach.call(modalBody.querySelectorAll("[data-close]"),function(b){
+      b.addEventListener("click",closeModal);
+    });
+    Array.prototype.forEach.call(modalBody.querySelectorAll("[data-check]"),function(b){
+      b.addEventListener("click",function(){ doUpdateCheck(true); });
+    });
+  }
+  function openAbout(){
+    openModal(
+      '<img class="about-logo" src="'+ABOUT_LOGO+'" alt="Ultimate Settings Panel logo">'+
+      '<h2 id="modalTitle">Ultimate Settings Panel</h2>'+
+      '<div class="about-ver">Version '+esc(window.uspVersion||"8.0.0")+'</div>'+
+      '<p class="about-tag">An enhanced Windows control panel<br>from TechyGeeksHome</p>'+
+      '<button class="chip-link" type="button" data-open="https://techygeekshome.info">techygeekshome.info</button>'+
+      '<p class="about-copy">&copy; 2026 TechyGeeksHome. All rights reserved.<br>Free to download and use.</p>'+
+      '<div class="modal-actions">'+
+        '<button class="act" type="button" data-check>Check for updates</button>'+
+        '<button class="act primary" type="button" data-close>Close</button>'+
+      '</div>');
+  }
+  function showUpdateResult(r){
+    var body;
+    if(!r || (!r.ok && r.error)){
+      body='<h2 id="modalTitle">Couldn’t check for updates</h2>'+
+        '<p class="upd-msg">'+esc((r&&r.error)||"Please try again later.")+'</p>'+
+        '<div class="modal-actions"><button class="act primary" type="button" data-close>Close</button></div>';
+    } else if(r.newer){
+      body='<img class="about-logo" src="'+ABOUT_LOGO+'" alt="">'+
+        '<h2 id="modalTitle">Update available</h2>'+
+        '<p class="upd-msg">Version <b>'+esc(r.latest)+'</b> is available.<br>You have '+esc(r.current)+'.</p>'+
+        (r.about?'<div class="upd-note">'+esc(r.about)+'</div>':'')+
+        '<div class="modal-actions">'+
+          '<button class="act launch" type="button" data-open="'+esc(r.url)+'">Download</button>'+
+          '<button class="act" type="button" data-close>Later</button>'+
+        '</div>';
+    } else {
+      body='<img class="about-logo" src="'+ABOUT_LOGO+'" alt="">'+
+        '<h2 id="modalTitle">You’re up to date</h2>'+
+        '<p class="upd-msg">You have the latest version.</p>'+
+        '<p class="upd-sub">Version '+esc(r.current)+'</p>'+
+        '<div class="modal-actions"><button class="act primary" type="button" data-close>Close</button></div>';
+    }
+    openModal(body);
+  }
+  function markUpdate(on){ var b=$("#updBadge"); if(!b) return; if(on) b.removeAttribute("hidden"); else b.setAttribute("hidden",""); }
+  function doUpdateCheck(manual){
+    if(!window.uspCheckUpdate){ if(manual) showToast("Update check needs the app"); return; }
+    if(manual) showToast("Checking for updates…");
+    window.uspCheckUpdate().then(function(r){
+      if(r&&r.ok&&r.newer) markUpdate(true);
+      if(manual) showUpdateResult(r);
+      else if(r&&r.ok&&r.newer) showToast("Update available: "+r.latest+" — click ↻");
+    },function(){ if(manual) showToast("Update check failed"); });
+  }
+
+  $("#about").addEventListener("click",openAbout);
+  $("#updates").addEventListener("click",function(){ doUpdateCheck(true); });
+  modalBack.addEventListener("click",function(e){ if(e.target===modalBack) closeModal(); });
+  $("#modalX").addEventListener("click",closeModal);
+  document.addEventListener("keydown",function(e){ if(e.key==="Escape" && !modalBack.hasAttribute("hidden")) closeModal(); });
+
+  render();
+  // No check on launch. Nothing is requested until somebody clicks "Check for updates",
+  // which is what the README promises and what every other TechyGeeksHome app does.
+})();
+</script>
+</body>
+</html>

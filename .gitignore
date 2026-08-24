@@ -1,0 +1,3 @@
+# Build output — releases are published from CI, not from a developer's machine.
+Ultimate Settings Panel.exe
+*.exe
