@@ -1,0 +1,67 @@
+# Builds Ultimate Settings Panel on every push and pull request.
+#
+# Together with the release workflow this is what makes a published binary a verifiable,
+# automated build of the source in this repository, rather than something a maintainer
+# compiled on their own machine and uploaded — which is exactly how the 8.0.0 source came
+# to be lost in the first place.
+name: Build
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.24'
+
+      - name: Vet
+        run: go vet ./...
+
+      # Cross-compiled from Linux on purpose: no cgo, so the Windows binary is
+      # reproducible from any agent and the build cannot quietly depend on a
+      # developer's machine.
+      - name: Build (windows/amd64)
+        env:
+          GOOS: windows
+          GOARCH: amd64
+          CGO_ENABLED: 0
+        run: go build -trimpath -ldflags="-H windowsgui -s -w" -o "Ultimate Settings Panel.exe" .
+
+      # The panel is embedded, so a build that succeeds but ships a broken page is
+      # possible. These checks fail the build if the two promises in the README stop
+      # being true: nothing runs at startup, and the update check points at GitHub.
+      - name: Check the shipped promises still hold
+        run: |
+          set -e
+          if grep -qa "doUpdateCheck(false)" "Ultimate Settings Panel.exe"; then
+            echo "FAIL: an update check runs at startup"; exit 1
+          fi
+          if ! grep -qa "api.github.com/repos/%s/%s/releases/latest" "Ultimate Settings Panel.exe"; then
+            echo "FAIL: the GitHub releases endpoint is missing"; exit 1
+          fi
+          if ! grep -qa "uspCheckUpdate" "Ultimate Settings Panel.exe"; then
+            echo "FAIL: the update bridge is missing"; exit 1
+          fi
+          echo "OK: no startup call, update check present"
+
+      - name: Upload the build
+        uses: actions/upload-artifact@v4
+        with:
+          name: ultimate-settings-panel
+          path: Ultimate Settings Panel.exe
+          retention-days: 14
