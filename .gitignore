@@ -1,3 +1,6 @@
 # Build output — releases are published from CI, not from a developer's machine.
 Ultimate Settings Panel.exe
 *.exe
+
+# Generated during the build by goversioninfo, not checked in.
+resource.syso

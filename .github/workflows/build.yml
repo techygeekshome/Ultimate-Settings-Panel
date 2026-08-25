@@ -38,6 +38,24 @@ jobs:
           CGO_ENABLED: 0
         run: go vet ./...
 
+      # Windows takes an executable's icon and its Properties -> Details panel from a
+      # resource section, not from anything in the Go source. goversioninfo compiles
+      # Branding/usp.ico and versioninfo.json into resource.syso; the Go linker picks up
+      # any .syso sitting next to the package automatically. No GOOS here on purpose --
+      # the tool itself has to build for the runner, not for the target.
+      - name: Embed the icon and version resource
+        run: |
+          set -euo pipefail
+          SRC_VER="$(grep -oP 'const Version = "\K[^"]+' main.go)"
+          IFS=. read -r MAJ MIN PAT <<< "$SRC_VER"
+          go run github.com/josephspurrier/goversioninfo/cmd/goversioninfo@v1.4.1 \
+            -64 -icon=Branding/usp.ico -o resource.syso \
+            -file-version="$SRC_VER.0" -product-version="$SRC_VER.0" \
+            -ver-major="$MAJ" -ver-minor="$MIN" -ver-patch="${PAT:-0}" -ver-build=0 \
+            -product-ver-major="$MAJ" -product-ver-minor="$MIN" -product-ver-patch="${PAT:-0}" -product-ver-build=0 \
+            versioninfo.json
+          ls -l resource.syso
+
       # Cross-compiled from Linux on purpose: no cgo, so the Windows binary is
       # reproducible from any agent and the build cannot quietly depend on a
       # developer's machine.
@@ -64,6 +82,19 @@ jobs:
             echo "FAIL: the update bridge is missing"; exit 1
           fi
           echo "OK: no startup call, update check present"
+
+      # A missing or ignored .syso fails silently -- the build succeeds and ships an
+      # executable with the stock Go icon and a blank Properties panel. Read the strings
+      # back out of the binary instead of trusting that the step above ran.
+      - name: Check the icon and version resource made it into the binary
+        run: |
+          python3 - <<'PY'
+          data = open("Ultimate Settings Panel.exe", "rb").read()
+          for s in ("TechyGeeksHome", "Ultimate Settings Panel"):
+              if s.encode("utf-16-le") not in data:
+                  raise SystemExit(f"FAIL: {s!r} is missing from the version resource")
+          print("OK: version resource embedded")
+          PY
 
       - name: Upload the build
         uses: actions/upload-artifact@v4
