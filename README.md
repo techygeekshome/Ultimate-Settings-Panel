@@ -1,12 +1,12 @@
 <div align="center">
 
-<img src="https://techygeekshome.info/wp-content/uploads/2026/08/usp-logo.png" alt="Ultimate Settings Panel logo" width="96" height="96">
+<img src="https://raw.githubusercontent.com/techygeekshome/Ultimate-Settings-Panel/main/Branding/usp-icon-256.png" alt="Ultimate Settings Panel logo" width="96" height="96">
 
-# Ultimate Settings Panel 8.0
+# Ultimate Settings Panel
 
 **Every Windows setting, tool and command — in one fast, searchable place.**
 
-[![Version](https://img.shields.io/badge/version-8.0.0-4c9bff)](https://github.com/techygeekshome/Ultimate-Settings-Panel/releases)
+[![Version](https://img.shields.io/github/v/release/techygeekshome/Ultimate-Settings-Panel?label=version&color=4c9bff)](https://github.com/techygeekshome/Ultimate-Settings-Panel/releases)
 [![Platform](https://img.shields.io/badge/platform-Windows%2010%20%7C%2011-0078d4)](#-download--run)
 [![Web edition](https://img.shields.io/badge/web%20edition-live-3fca86)](https://techygeekshome.info/ultimate-settings-panel-online/)
 [![Made by TechyGeeksHome](https://img.shields.io/badge/made%20by-TechyGeeksHome-b191f2)](https://techygeekshome.info)
@@ -110,7 +110,7 @@ newer version it offers a link to the release page, and that is all.
 network connection at all. Version 8.0.0 did quietly check on every launch; 8.0.1 does not,
 and the build workflow fails if that behaviour ever comes back.
 
-## 📜 What's new in 8.0
+## 📜 What's new in the 8.0 series
 
 Rebuilt from the ground up: a native Windows app **and** a portable web app (the original was a C#/WinForms app on the unmaintained MetroFramework). Removed what no longer works — Google Analytics, Internet Explorer, dead telnet "tricks", Google+ links — and added the Windows 11 Settings, Terminal & Shell and modern diagnostics categories, favourites, themes, and `.bat` export.
 
