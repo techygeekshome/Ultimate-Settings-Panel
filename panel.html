@@ -234,7 +234,7 @@
       </span>
       <span>
         <span class="name">Ultimate <b>Settings</b> Panel</span>
-        <span class="ver">v8.0.0 · WINDOWS APP</span>
+        <span class="ver" id="verBadge">v8.0.1 · WINDOWS APP</span>
       </span>
     </div>
     <div class="search">
@@ -272,7 +272,7 @@
   </div>
   <div style="text-align:right">
     A modern reimagining of the <a href="https://github.com/techygeekshome/Ultimate-Settings-Panel" target="_blank" rel="noopener">Ultimate Settings Panel</a><br>
-    by <a href="https://techygeekshome.info" target="_blank" rel="noopener">TechyGeeksHome</a> · v8.0.0
+    by <a href="https://techygeekshome.info" target="_blank" rel="noopener">TechyGeeksHome</a> · <span id="verFoot">v8.0.1</span>
   </div>
 </footer>
 
@@ -286,6 +286,24 @@
 <div id="toast" role="status" aria-live="polite"></div>
 
 <script>
+  /* ---- Version, in one place ----
+     main.go sets window.uspVersion from its own `const Version` before this page runs, so the
+     desktop build always shows the real build number. The literal below is only the fallback
+     for opening this file without the Go host, and it is what used to be hard-coded into the
+     header and the footer in three separate places - which is how the app came to say 8.0.0
+     while its own title bar said 8.0.1. Bump it with main.go when the version changes. */
+  var USP_VERSION = (typeof window.uspVersion === "string" && window.uspVersion) || "8.0.1";
+
+  (function stampVersion(){
+    function put(id, text){ var el = document.getElementById(id); if (el) el.textContent = text; }
+    function go(){
+      put("verBadge", "v" + USP_VERSION + " \u00b7 WINDOWS APP");
+      put("verFoot", "v" + USP_VERSION);
+    }
+    if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", go);
+    else go();
+  })();
+
 (function(){
   "use strict";
   // kind: "launch" = protocol/app opens on Windows · "web" = website · "cmd" = classic command to copy/run
@@ -883,7 +901,7 @@
     openModal(
       '<img class="about-logo" src="'+ABOUT_LOGO+'" alt="Ultimate Settings Panel logo">'+
       '<h2 id="modalTitle">Ultimate Settings Panel</h2>'+
-      '<div class="about-ver">Version '+esc(window.uspVersion||"8.0.0")+'</div>'+
+      '<div class="about-ver">Version '+esc(USP_VERSION)+'</div>'+
       '<p class="about-tag">An enhanced Windows control panel<br>from TechyGeeksHome</p>'+
       '<button class="chip-link" type="button" data-open="https://techygeekshome.info">techygeekshome.info</button>'+
       '<p class="about-copy">&copy; 2026 TechyGeeksHome. All rights reserved.<br>Free to download and use.</p>'+
