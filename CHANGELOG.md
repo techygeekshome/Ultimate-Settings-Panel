@@ -3,6 +3,30 @@
 All notable changes to Ultimate Settings Panel are documented here.
 This project loosely follows [Keep a Changelog](https://keepachangelog.com/) and [Semantic Versioning](https://semver.org/).
 
+## [8.0.2] - 2026-08-27
+
+### Fixed
+- **The app showed the wrong version number.** The title bar read the real build number from
+  the Go code; the header, the footer and the About box did not - the version was written into
+  the HTML by hand in three places and none of them was updated for 8.0.1, so the app said
+  8.0.0 while its own title bar said 8.0.1. There is now one version value per file, and the
+  desktop build takes it from the binary so it cannot drift again.
+- The README described the app it replaces as "the original C#/WinForms program from 2020".
+  2020 is when the *last* WinForms version shipped; the original was first released in
+  **August 2014**.
+
+### Added
+- **More from TechyGeeksHome** in the About box - the rest of the free range, one line each,
+  opening in the browser. Ultimate Settings Panel is not in its own list.
+
+## [8.0.1] - 2026-08-24
+
+### Changed
+- The update check no longer runs when the app starts. It now asks GitHub for the latest
+  release only when you press the button, which is what the README always said it did.
+- Source published, and builds are now produced by CI from that source rather than compiled
+  by hand and uploaded.
+
 ## [8.0.0] - 2026-08-07
 
 A complete, ground-up reimagining of the Ultimate Settings Panel: a native Windows app **and** a portable web app, replacing the original C# / WinForms program.

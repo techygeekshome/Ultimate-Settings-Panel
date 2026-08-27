@@ -32,7 +32,7 @@ import (
 
 // Version of this build. The About box reads it from here rather than hard-coding it in
 // the HTML, so there is exactly one place to change at release time.
-const Version = "8.0.1"
+const Version = "8.0.2"
 
 const (
 	githubOwner = "techygeekshome"
