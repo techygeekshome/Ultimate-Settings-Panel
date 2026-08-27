@@ -18,7 +18,7 @@
 
 ---
 
-A modern, ground-up rebuild of the classic TechyGeeksHome **Ultimate Settings Panel** — a native Windows app *and* a portable web app, replacing the original C#/WinForms program from 2020. No install, no dependencies, and no network connection unless you press Check for updates.
+A modern, ground-up rebuild of the classic TechyGeeksHome **Ultimate Settings Panel** — a native Windows app *and* a portable web app, replacing the original C#/WinForms program, first released in 2014 and last updated in 2020. No install, no dependencies, and no network connection unless you press Check for updates.
 
 ## 🎬 See it in action
 
