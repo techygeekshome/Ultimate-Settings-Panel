@@ -3,6 +3,19 @@
 All notable changes to Ultimate Settings Panel are documented here.
 This project loosely follows [Keep a Changelog](https://keepachangelog.com/) and [Semantic Versioning](https://semver.org/).
 
+## [8.0.3] - 2026-08-28
+
+### Fixed
+- **Every Run button did nothing but say "run bridge unavailable".** The panel launches things
+  by calling `window.uspRun`, which the Go shell hands to the page - and the shell never
+  registered it, so on 8.0.1 and 8.0.2 no card on any screen could launch anything. The bind is
+  back, with a launcher that handles the three kinds of card: a URI Windows opens for itself
+  (`ms-settings:`, `microsoft-edge:`, `https:`), a console tool whose output is the point
+  (`ipconfig /flushdns`, `gpresult /r`, `sfc /scannow`) which now keeps its window open instead
+  of closing before it can be read, and everything else - GUI tools, `.msc` consoles, `.cpl`
+  applets and Office switches. Reported in
+  [#6](https://github.com/techygeekshome/Ultimate-Settings-Panel/issues/6).
+
 ## [8.0.2] - 2026-08-27
 
 ### Fixed

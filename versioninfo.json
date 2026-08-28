@@ -1,7 +1,7 @@
 {
   "FixedFileInfo": {
-    "FileVersion": { "Major": 8, "Minor": 0, "Patch": 2, "Build": 0 },
-    "ProductVersion": { "Major": 8, "Minor": 0, "Patch": 2, "Build": 0 },
+    "FileVersion": { "Major": 8, "Minor": 0, "Patch": 3, "Build": 0 },
+    "ProductVersion": { "Major": 8, "Minor": 0, "Patch": 3, "Build": 0 },
     "FileFlagsMask": "3f",
     "FileFlags": "00",
     "FileOS": "040004",
@@ -11,12 +11,12 @@
   "StringFileInfo": {
     "CompanyName": "TechyGeeksHome",
     "FileDescription": "Ultimate Settings Panel",
-    "FileVersion": "8.0.2.0",
+    "FileVersion": "8.0.3.0",
     "InternalName": "Ultimate Settings Panel.exe",
     "LegalCopyright": "Copyright (c) 2026 TechyGeeksHome. All rights reserved.",
     "OriginalFilename": "Ultimate Settings Panel.exe",
     "ProductName": "Ultimate Settings Panel",
-    "ProductVersion": "8.0.2.0"
+    "ProductVersion": "8.0.3.0"
   },
   "VarFileInfo": {
     "Translation": { "LangID": "0809", "CharsetID": "04B0" }
