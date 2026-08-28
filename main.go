@@ -20,6 +20,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"os"
 	"regexp"
 	"strconv"
 	"strings"
@@ -32,7 +33,7 @@ import (
 
 // Version of this build. The About box reads it from here rather than hard-coding it in
 // the HTML, so there is exactly one place to change at release time.
-const Version = "8.0.2"
+const Version = "8.0.3"
 
 const (
 	githubOwner = "techygeekshome"
@@ -73,6 +74,10 @@ func main() {
 
 	// The page calls this, and only from the "Check for updates" button.
 	w.Bind("uspCheckUpdate", checkForUpdate)
+
+	// Every Run button on every card comes through here. Without this bind the page finds no
+	// bridge and says so, which is what it did in 8.0.1 and 8.0.2.
+	w.Bind("uspRun", runCommand)
 
 	// A data: URL rather than a local web server: no listening socket on the machine, and
 	// nothing for a firewall or a security team to ask about. The page's clipboard helper
@@ -235,4 +240,131 @@ func messageBox(text, caption string) {
 	c, _ := syscall.UTF16PtrFromString(caption)
 	const mbIconInformation = 0x40
 	proc.Call(0, uintptr(unsafe.Pointer(t)), uintptr(unsafe.Pointer(c)), mbIconInformation)
+}
+
+// uriScheme matches something Windows already knows how to open by itself - ms-settings:,
+// ms-windows-store:, microsoft-edge:, https: - while leaving a drive letter alone, because
+// "C:\\..." is a path and not a scheme.
+var uriScheme = regexp.MustCompile(`^[a-zA-Z][a-zA-Z0-9+.\-]+:`)
+
+// envVar matches a Windows %NAME% reference, so a command can be handed to ShellExecute with
+// the variable already resolved. Anything sent to cmd keeps its %NAME% intact and lets cmd
+// expand it, which is what makes a wildcard like %temp%\\* behave.
+var envVar = regexp.MustCompile(`%([A-Za-z_][A-Za-z0-9_()]*)%`)
+
+// consoleTools are the commands whose OUTPUT is the reason anyone pressed the button. Started
+// on their own they print into a console that closes before it can be read, so they run under
+// cmd /k and the window stays open. Shells are deliberately absent: powershell and wt already
+// own their window.
+var consoleTools = map[string]bool{
+	"arp": true, "assoc": true, "chkdsk": true, "del": true, "dir": true, "dism": true,
+	"driverquery": true, "getmac": true, "gpresult": true, "ipconfig": true, "manage-bde": true,
+	"nbtstat": true, "net": true, "netsh": true, "netstat": true, "nslookup": true,
+	"openfiles": true, "ping": true, "powercfg": true, "route": true, "set": true, "sfc": true,
+	"systeminfo": true, "tasklist": true, "tracert": true, "ver": true, "vol": true,
+	"whoami": true, "winget": true, "winmgmt": true, "wmic": true,
+}
+
+// runCommand launches one card from the panel.
+//
+// The page sends exactly the command printed on the card, so this has to cope with three
+// shapes: a URI Windows opens for itself, a console tool whose output has to stay on screen,
+// and everything else - GUI tools, .msc consoles, .cpl applets, Office switches.
+//
+// Nothing here is elevated and nothing is run in the background: this is the same launch a
+// person would get by typing the command into Win+R, which is what the cards claim to be.
+func runCommand(command string) error {
+	command = strings.TrimSpace(command)
+	if command == "" {
+		return fmt.Errorf("there is nothing to run")
+	}
+
+	if uriScheme.MatchString(command) && !isDrivePath(command) {
+		return shellExecute(command, "")
+	}
+
+	program, args := splitCommand(expandEnv(command))
+
+	// cmd gets the ORIGINAL string: its own %NAME% expansion is what makes %temp%\\* work.
+	if consoleTools[strings.TrimSuffix(strings.ToLower(program), ".exe")] {
+		return shellExecute("cmd.exe", "/k "+command)
+	}
+
+	return shellExecute(program, args)
+}
+
+// isDrivePath tells "C:\\Windows" from "ms-settings:display" - a single letter before the colon
+// is a drive, not a scheme.
+func isDrivePath(s string) bool {
+	return len(s) > 1 && s[1] == ':'
+}
+
+func expandEnv(s string) string {
+	return envVar.ReplaceAllStringFunc(s, func(m string) string {
+		if v, ok := os.LookupEnv(strings.Trim(m, "%")); ok {
+			return v
+		}
+		return m
+	})
+}
+
+// splitCommand separates the program from its arguments. A quoted program comes first; then a
+// path that exists as written, because "C:\\Program Files\\...\\SCANPST.EXE" carries spaces and
+// no quotes; and only then the first space.
+func splitCommand(s string) (program, args string) {
+	if strings.HasPrefix(s, `"`) {
+		if end := strings.Index(s[1:], `"`); end >= 0 {
+			return s[1 : end+1], strings.TrimSpace(s[end+2:])
+		}
+	}
+	if _, err := os.Stat(s); err == nil {
+		return s, ""
+	}
+	// A path carrying spaces with no switch after it is one file name, not a program plus
+	// arguments - and it has to hold up on a machine where that file is not installed.
+	if strings.ContainsAny(s, `\\/`) && !strings.Contains(s, " /") && !strings.Contains(s, " -") {
+		return s, ""
+	}
+	if i := strings.IndexByte(s, ' '); i >= 0 {
+		return s[:i], strings.TrimSpace(s[i+1:])
+	}
+	return s, ""
+}
+
+// shellExecute is the same call Win+R makes. The verb is left NULL so each file type gets its
+// own default - "open" for an executable, but "cplopen" for a .cpl applet, which is why asking
+// for "open" by name fails on half the Control Panel cards.
+func shellExecute(file, params string) error {
+	shell32 := syscall.NewLazyDLL("shell32.dll")
+	proc := shell32.NewProc("ShellExecuteW")
+
+	f, err := syscall.UTF16PtrFromString(file)
+	if err != nil {
+		return fmt.Errorf("that command could not be read")
+	}
+	var p *uint16
+	if params != "" {
+		if p, err = syscall.UTF16PtrFromString(params); err != nil {
+			return fmt.Errorf("that command could not be read")
+		}
+	}
+
+	const swShowNormal = 1
+	r, _, _ := proc.Call(0, 0, uintptr(unsafe.Pointer(f)), uintptr(unsafe.Pointer(p)), 0, swShowNormal)
+
+	// ShellExecute returns a value above 32 on success, and an error code below it. The three
+	// worth naming are the ones a user can actually hit.
+	if r > 32 {
+		return nil
+	}
+	switch r {
+	case 2, 3:
+		return fmt.Errorf("Windows could not find %s on this machine", file)
+	case 5:
+		return fmt.Errorf("Windows refused to run %s - it may need administrator rights", file)
+	case 31:
+		return fmt.Errorf("nothing on this machine is set up to open %s", file)
+	default:
+		return fmt.Errorf("Windows could not start %s (error %d)", file, r)
+	}
 }
