@@ -190,15 +190,21 @@
     margin:10px 0 4px;cursor:pointer}
   .chip-link:hover{background:color-mix(in srgb,var(--accent) 18%,var(--surface))}
   .about-copy{color:var(--faint);font-size:11.5px;line-height:1.6;margin:16px 0 0}
-  /* "More from TechyGeeksHome" inside the About modal. Rows are buttons, not links, so they
-     go through openExternal() and open in the user's real browser rather than inside WebView2. */
+  /* "More from TechyGeeksHome" inside the About modal. The tiles are buttons, not links, so
+     they go through openExternal() and open in the user's real browser rather than in WebView2.
+     Two columns, one tile per app; when the tile count is odd the GitHub profile tile fills the
+     gap so the grid always squares off. */
   .fam-wrap{margin:18px 0 4px;text-align:left;border-top:1px solid var(--line);padding-top:14px}
-  .fam-head{font-size:11.5px;font-weight:600;color:var(--text);margin:0 0 8px;letter-spacing:.02em}
-  .fam-row{display:block;width:100%;text-align:left;background:transparent;border:0;
-           padding:6px 0;cursor:pointer;font-family:inherit}
-  .fam-row:hover .fam-name{text-decoration:underline}
-  .fam-name{display:block;font-size:12.5px;font-weight:600;color:var(--accent)}
-  .fam-blurb{display:block;font-size:11.5px;color:var(--faint);line-height:1.45;margin-top:1px}
+  .fam-head{font-size:11.5px;font-weight:600;color:var(--text);margin:0 0 10px;letter-spacing:.02em}
+  .fam-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .fam-tile{display:block;width:100%;text-align:center;font-family:inherit;font-size:12.5px;
+            font-weight:600;color:var(--accent);background:var(--surface-2);
+            border:1px solid var(--border);border-radius:8px;padding:9px 8px;cursor:pointer}
+  .fam-tile:hover{background:color-mix(in srgb,var(--accent) 12%,var(--surface-2));
+                  border-color:color-mix(in srgb,var(--accent) 35%,transparent)}
+  .fam-tile.wide{grid-column:1 / -1;color:#fff;background:var(--accent);
+                 border-color:var(--accent)}
+  .fam-tile.wide:hover{background:color-mix(in srgb,var(--accent) 82%,#000)}
   .upd-msg{font-size:14px;line-height:1.55;margin:6px 0 4px}
   .upd-sub{color:var(--muted);font-size:12.5px;margin:0 0 4px}
   .upd-note{font-size:12.5px;color:var(--muted);background:var(--surface-2);border:1px solid var(--border);
@@ -292,7 +298,7 @@
      for opening this file without the Go host, and it is what used to be hard-coded into the
      header and the footer in three separate places - which is how the app came to say 8.0.0
      while its own title bar said 8.0.1. Bump it with main.go when the version changes. */
-  var USP_VERSION = (typeof window.uspVersion === "string" && window.uspVersion) || "8.0.2";
+  var USP_VERSION = (typeof window.uspVersion === "string" && window.uspVersion) || "8.0.4";
 
   (function stampVersion(){
     function put(id, text){ var el = document.getElementById(id); if (el) el.textContent = text; }
@@ -857,22 +863,26 @@
      The desktop apps carry the same list in Family.cs; if you add a tool, add it in both.
      Ultimate Settings Panel is deliberately absent - an app does not advertise itself. */
   var USP_FAMILY = [
-    ["AppGeek",     "Update every app on your PC in one go.",        "https://techygeekshome.info/appgeek/"],
-    ["DiskGeek",    "Find out exactly where the disk space went.",   "https://techygeekshome.info/diskgeek/"],
-    ["PDFGeek",     "Merge, split and convert PDFs on your own PC.", "https://techygeekshome.info/pdfgeek/"],
-    ["Java 8 MSI Installers", "Java 8 as MSIs, for silent deployment.", "https://techygeekshome.info/java-8-msi-installers/"]
+    ["AppGeek",   "https://techygeekshome.info/appgeek/"],
+    ["CleanGeek", "https://techygeekshome.info/cleangeek/"],
+    ["DiskGeek",  "https://techygeekshome.info/diskgeek/"],
+    ["DriverGeek","https://techygeekshome.info/drivergeek/"],
+    ["PDFGeek",   "https://techygeekshome.info/pdfgeek/"]
   ];
+  var USP_GITHUB = "https://github.com/techygeekshome";
 
   function familyHtml(){
-    var rows = USP_FAMILY.map(function(f){
-      return '<button class="fam-row" type="button" data-open="'+esc(f[2])+'">'+
-               '<span class="fam-name">'+esc(f[0])+'</span>'+
-               '<span class="fam-blurb">'+esc(f[1])+'</span>'+
-             '</button>';
-    }).join("");
+    var tiles = USP_FAMILY.map(function(f){
+      return '<button class="fam-tile" type="button" data-open="'+esc(f[1])+'">'+esc(f[0])+'</button>';
+    });
+    // An odd number of apps leaves a gap in the two-column grid, so the GitHub tile takes it.
+    // An even number puts the GitHub tile full width underneath, coloured, so the block still
+    // squares off either way.
+    var wide = (tiles.length % 2 === 0) ? " wide" : "";
+    tiles.push('<button class="fam-tile'+wide+'" type="button" data-open="'+esc(USP_GITHUB)+'">All our code on GitHub</button>');
     return '<div class="fam-wrap">'+
              '<div class="fam-head">More from TechyGeeksHome</div>'+
-             rows+
+             '<div class="fam-grid">'+tiles.join("")+'</div>'+
              '<button class="chip-link" type="button" data-open="https://techygeekshome.info/geek-tools/">See all the free tools</button>'+
            '</div>';
   }
