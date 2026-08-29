@@ -3,6 +3,23 @@
 All notable changes to Ultimate Settings Panel are documented here.
 This project loosely follows [Keep a Changelog](https://keepachangelog.com/) and [Semantic Versioning](https://semver.org/).
 
+## [8.0.4] - 2026-08-29
+
+### Removed
+- **Java 8 MSI Installers has gone from the About box.** It is not one of ours - it is a
+  repackaging of Oracle's installers - and listing it under "More from TechyGeeksHome"
+  implied otherwise. It should never have been there.
+
+### Changed
+- The rest of the range in the About box is now a two-column grid of buttons, one per app,
+  each opening that app's page on techygeekshome.info rather than a repository. AppGeek,
+  CleanGeek, DiskGeek, DriverGeek and PDFGeek; Ultimate Settings Panel still leaves itself
+  out, because an app does not advertise itself.
+- Five apps is an odd number, so an "All our code on GitHub" button takes the spare cell and
+  the grid squares off. If the count ever turns even that button drops underneath at full
+  width, coloured, instead - so the block reads as finished either way.
+
+---
 ## [8.0.3] - 2026-08-28
 
 ### Fixed
