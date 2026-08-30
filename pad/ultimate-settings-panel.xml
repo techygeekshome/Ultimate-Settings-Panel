@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<XML_DIZ_INFO>
+  <MASTER_PAD_VERSION_INFO>
+    <MASTER_PAD_VERSION>4.0</MASTER_PAD_VERSION>
+    <MASTER_PAD_EDITOR>TechyGeeksHome</MASTER_PAD_EDITOR>
+    <MASTER_PAD_INFO>Portable Application Description, or PAD for short, is a data set that is used by shareware authors to disseminate information to anyone interested in their software products.</MASTER_PAD_INFO>
+  </MASTER_PAD_VERSION_INFO>
+  <Company_Info>
+    <Company_Name>TechyGeeksHome</Company_Name>
+    <Address_1></Address_1>
+    <Address_2></Address_2>
+    <City_Town></City_Town>
+    <State_Province></State_Province>
+    <Zip_Postal_Code></Zip_Postal_Code>
+    <Country>United Kingdom</Country>
+    <Company_WebSite_URL>https://techygeekshome.info</Company_WebSite_URL>
+    <Contact_Info>
+      <Author_First_Name>Andy</Author_First_Name>
+      <Author_Last_Name>Armstrong</Author_Last_Name>
+      <Author_Email>techygeeks@outlook.com</Author_Email>
+      <Contact_First_Name>Andy</Contact_First_Name>
+      <Contact_Last_Name>Armstrong</Contact_Last_Name>
+      <Contact_Email>techygeeks@outlook.com</Contact_Email>
+    </Contact_Info>
+    <Support_Info>
+      <Sales_Email>techygeeks@outlook.com</Sales_Email>
+      <Support_Email>techygeeks@outlook.com</Support_Email>
+      <General_Email>techygeeks@outlook.com</General_Email>
+    </Support_Info>
+  </Company_Info>
+  <Program_Info>
+    <Program_Name>Ultimate Settings Panel</Program_Name>
+    <Program_Version>8.0.4</Program_Version>
+    <Program_Release_Month>08</Program_Release_Month>
+    <Program_Release_Day>29</Program_Release_Day>
+    <Program_Release_Year>2026</Program_Release_Year>
+    <Program_Cost_Dollars>0</Program_Cost_Dollars>
+    <Program_Type>Freeware</Program_Type>
+    <Program_Release_Status>Minor Update</Program_Release_Status>
+    <Program_Install_Support>No Install Support</Program_Install_Support>
+    <Program_OS_Support>Win10,Win11,WinServer</Program_OS_Support>
+    <Program_Language>English</Program_Language>
+    <Program_Change_Info>Maintenance release. Built by CI from public source, with the version verified against the release tag.</Program_Change_Info>
+    <Program_Specific_Category>System Utilities::Launchers &amp; Task Managers</Program_Specific_Category>
+    <Program_Category_Class>System Utilities</Program_Category_Class>
+    <Program_System_Requirements>Windows 10 version 1809 or later, 64-bit. Nothing else to install.</Program_System_Requirements>
+  </Program_Info>
+  <File_Info>
+    <File_Size_Bytes>2845353</File_Size_Bytes>
+    <File_Size_K>2779</File_Size_K>
+    <File_Size_MB>3</File_Size_MB>
+  </File_Info>
+  <Expire_Info>
+    <Has_Expire_Info>N</Has_Expire_Info>
+  </Expire_Info>
+  <Program_Descriptions>
+    <English>
+      <Keywords>windows settings, control panel, admin tools, system tools, diagnostics, shortcuts, launcher, sysadmin, IT support, free</Keywords>
+      <Char_Desc_45>250+ Windows settings and tools in one panel</Char_Desc_45>
+      <Char_Desc_80>Every Windows setting, admin tool and diagnostic command in one searchable panel</Char_Desc_80>
+      <Char_Desc_250>Ultimate Settings Panel puts 250+ Windows settings, administrative tools and diagnostic commands in one fast, searchable window, so you stop hunting across Settings, Control Panel and a dozen scattered consoles. Free, with no adverts.</Char_Desc_250>
+      <Char_Desc_450>Ultimate Settings Panel puts 250+ Windows settings, administrative tools and diagnostic commands in one fast, searchable window. Search once and jump straight to any item across Windows 11 Settings, Windows Tools, Control Panel, Networking, Diagnostics, Power and Session, Server Admin, Terminal and Shell, and Office. Includes favourites, light and dark themes and direct ms-settings deep links. Free, no adverts, no tracking.</Char_Desc_450>
+      <Char_Desc_2000>Ultimate Settings Panel puts every Windows setting, administrative tool and diagnostic command in one fast, searchable place, instead of hunting across Settings, Control Panel and a dozen scattered admin consoles.
+
+Search once and jump straight to any of 250+ items across categories including Windows 11 Settings, Windows Tools, Control Panel, Networking, Diagnostics, Power and Session, Server Admin, Terminal and Shell, and Outlook and Office.
+
+It is aimed squarely at IT support and system administrators, but it is just as useful to anyone who is tired of not being able to find the setting they know exists. Every entry launches the real Windows tool, so nothing is reimplemented and nothing is changed behind your back.
+
+Includes favourites so the things you use daily are one click away, light and dark themes, and direct ms-settings deep links.
+
+There is no installer bloat, no analytics, no tracking, no account and no adverts. Completely free, with no Pro tier and no upsells. Ships as a portable archive, so there is nothing to install.</Char_Desc_2000>
+    </English>
+  </Program_Descriptions>
+  <Web_Info>
+    <Application_URLs>
+      <Application_Info_URL>https://techygeekshome.info/ultimate-settings-panel-online/</Application_Info_URL>
+      <Application_Order_URL></Application_Order_URL>
+      <Application_Screenshot_URL>https://cdn.jsdelivr.net/gh/techygeekshome/Ultimate-Settings-Panel@91d555e5bc5e25575bdcf6af30b1823668531da9/Screenshots/usp-screenshot-1.jpg</Application_Screenshot_URL>
+      <Application_Icon_URL>https://cdn.jsdelivr.net/gh/techygeekshome/Ultimate-Settings-Panel@91d555e5bc5e25575bdcf6af30b1823668531da9/Branding/usp-icon-256.png</Application_Icon_URL>
+      <Application_XML_File_URL>https://raw.githubusercontent.com/techygeekshome/Ultimate-Settings-Panel/main/pad/ultimate-settings-panel.xml</Application_XML_File_URL>
+    </Application_URLs>
+    <Download_URLs>
+      <Primary_Download_URL>https://github.com/techygeekshome/Ultimate-Settings-Panel/releases/latest/download/Ultimate-Settings-Panel.zip</Primary_Download_URL>
+      <Secondary_Download_URL>https://sourceforge.net/projects/ultimate-settings-panel/files/latest/download</Secondary_Download_URL>
+    </Download_URLs>
+  </Web_Info>
+</XML_DIZ_INFO>
