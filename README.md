@@ -38,11 +38,6 @@ A full walkthrough of the panel — search, categories, themes and launching set
 </p>
 <p float="left">
   <img src="Screenshots/usp-screenshot-5.jpg" width="49%" />
-  <img src="Screenshots/usp-screenshot-6.jpg" width="49%" />
-</p>
-<p float="left">
-  <img src="Screenshots/usp-screenshot-7.jpg" width="49%" />
-  <img src="Screenshots/usp-screenshot-8.jpg" width="49%" />
 </p>
 
 ## ⬇️ Download & run
