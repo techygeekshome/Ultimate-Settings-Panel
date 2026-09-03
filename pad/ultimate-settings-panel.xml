@@ -44,7 +44,6 @@
     <Program_Specific_Category>System Utilities::Launchers &amp; Task Managers</Program_Specific_Category>
     <Program_Category_Class>System Utilities</Program_Category_Class>
     <Program_System_Requirements>Windows 10 version 1809 or later, 64-bit. Nothing else to install.</Program_System_Requirements>
-  </Program_Info>
   <File_Info>
     <File_Size_Bytes>2845353</File_Size_Bytes>
     <File_Size_K>2779</File_Size_K>
@@ -53,6 +52,7 @@
   <Expire_Info>
     <Has_Expire_Info>N</Has_Expire_Info>
   </Expire_Info>
+  </Program_Info>
   <Program_Descriptions>
     <English>
       <Keywords>windows settings, control panel, admin tools, system tools, diagnostics, shortcuts, launcher, sysadmin, IT support, free</Keywords>
