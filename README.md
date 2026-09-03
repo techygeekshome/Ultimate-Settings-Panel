@@ -26,6 +26,10 @@ A modern, ground-up rebuild of the classic TechyGeeksHome **Ultimate Settings Pa
 
 A full walkthrough of the panel — search, categories, themes and launching settings.
 
+[![Ultimate Settings Panel demo video](https://img.youtube.com/vi/IdcG3c8BWsw/maxresdefault.jpg)](https://www.youtube.com/watch?v=IdcG3c8BWsw)
+
+The short version. Search, run and copy, in under a minute.
+
 ## 📸 Screenshots
 
 <p float="left">
